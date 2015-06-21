@@ -4,7 +4,7 @@ import "github.com/nsf/termbox-go"
 
 type Canvas [][]Cell
 
-func NewCanvas(width, height int) Canvas {
+func newCanvas(width, height int) Canvas {
 	canvas := make(Canvas, width)
 	for i := range canvas {
 		canvas[i] = make([]Cell, height)
@@ -31,14 +31,16 @@ func (s *Screen) Tick(ev Event) {
 	if s.level != nil {
 		s.level.Tick(ev)
 	}
-	for _, e := range s.entities {
-		e.Tick(ev)
+	if ev.Type != EventNone {
+		for _, e := range s.entities {
+			e.Tick(ev)
+		}
 	}
 }
 
 func (s *Screen) Draw() {
 	// Update termloop canvas
-	s.canvas = NewCanvas(s.width, s.height)
+	s.canvas = newCanvas(s.width, s.height)
 	if s.level != nil {
 		s.level.DrawBackground(s)
 		s.level.Draw(s)
@@ -58,13 +60,13 @@ func (s *Screen) Draw() {
 	termbox.Flush()
 }
 
-func (s *Screen) Resize(w, h int) {
+func (s *Screen) resize(w, h int) {
 	s.width = w
 	s.height = h
-	c := NewCanvas(w, h)
+	c := newCanvas(w, h)
 	// Copy old data that fits
-	for i := 0; i < Min(w, len(s.canvas)); i++ {
-		for j := 0; j < Min(h, len(s.canvas[0])); j++ {
+	for i := 0; i < min(w, len(s.canvas)); i++ {
+		for j := 0; j < min(h, len(s.canvas[0])); j++ {
 			c[i][j] = s.canvas[i][j]
 		}
 	}
@@ -80,10 +82,10 @@ func (s *Screen) TimeDelta() float64 {
 }
 
 func (s *Screen) RenderCell(x, y int, c *Cell) {
-	RenderCell(&s.canvas[x][y], c)
+	renderCell(&s.canvas[x][y], c)
 }
 
-func RenderCell(old, new_ *Cell) {
+func renderCell(old, new_ *Cell) {
 	if new_.Ch != 0 {
 		old.Ch = new_.Ch
 	}

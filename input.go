@@ -2,28 +2,28 @@ package termloop
 
 import "github.com/nsf/termbox-go"
 
-type Input struct {
+type input struct {
 	endKey termbox.Key
 	eventQ chan termbox.Event
 	ctrl   chan bool
 }
 
-func NewInput() *Input {
-	i := Input{eventQ: make(chan termbox.Event),
+func newInput() *input {
+	i := input{eventQ: make(chan termbox.Event),
 		ctrl:   make(chan bool, 2),
 		endKey: termbox.KeyEsc}
 	return &i
 }
 
-func (i *Input) Start() {
-	go Poll(i)
+func (i *input) start() {
+	go poll(i)
 }
 
-func (i *Input) Stop() {
+func (i *input) stop() {
 	i.ctrl <- true
 }
 
-func Poll(i *Input) {
+func poll(i *input) {
 loop:
 	for {
 		select {

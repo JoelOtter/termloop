@@ -15,6 +15,7 @@ func (m *MovingText) Draw(s *tl.Screen) {
 }
 
 func (m *MovingText) Tick(ev tl.Event) {
+	// Enable arrow key movement
 	if ev.Type == tl.EventKey {
 		x, y := m.text.Position()
 		switch ev.Key {
@@ -41,6 +42,8 @@ func main() {
 		return
 	}
 	g := tl.NewGame()
-	g.AddEntity(&MovingText{text: tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue)})
+	g.AddEntity(&MovingText{
+		text: tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue),
+	})
 	g.Start()
 }

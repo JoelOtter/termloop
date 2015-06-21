@@ -17,8 +17,31 @@ func NewBaseLevel(bg Cell) *BaseLevel {
 }
 
 func (l *BaseLevel) Tick(ev Event) {
+	// Handle collisions
+	colls := make([]Physical, 0)
 	for _, e := range l.entities {
-		e.Tick(ev)
+		if p, ok := interface{}(e).(Physical); ok {
+			colls = append(colls, p)
+		}
+	}
+	jobs := make(chan Physical, len(colls))
+	results := make(chan int, len(colls))
+	for w := 0; w <= len(colls)/3; w++ {
+		go checkCollisionsWorker(colls, jobs, results)
+	}
+	for _, p := range colls {
+		jobs <- p
+	}
+	close(jobs)
+	for r := 0; r < len(colls); r++ {
+		<-results
+	}
+
+	// Handle input
+	if ev.Type != EventNone {
+		for _, e := range l.entities {
+			e.Tick(ev)
+		}
 	}
 }
 
@@ -46,5 +69,25 @@ func (l *BaseLevel) RemoveEntity(d Drawable) {
 			l.entities = append(l.entities[:i], l.entities[i+1:]...)
 			return
 		}
+	}
+}
+
+func checkCollisionsWorker(ps []Physical, jobs <-chan Physical, results chan<- int) {
+	for p := range jobs {
+		for _, c := range ps {
+			if c == p {
+				continue
+			}
+			px, py := p.Position()
+			cx, cy := c.Position()
+			pw, ph := p.Size()
+			cw, ch := c.Size()
+			if px < cx+cw && px+pw > cx &&
+				py < cy+ch && py+ph > cy {
+				c.Collide(p)
+				p.Collide(c)
+			}
+		}
+		results <- 1
 	}
 }

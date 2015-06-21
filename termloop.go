@@ -7,7 +7,13 @@ type Drawable interface {
 	Draw(*Screen)
 }
 
-func Min(a, b int) int {
+type Physical interface {
+	Position() (int, int)
+	Size() (int, int)
+	Collide(Physical)
+}
+
+func min(a, b int) int {
 	if a < b {
 		return a
 	}
@@ -29,7 +35,7 @@ type Event struct {
 	Mod  Modifier
 }
 
-func ConvertEvent(ev termbox.Event) Event {
+func convertEvent(ev termbox.Event) Event {
 	return Event{
 		Type: EventType(ev.Type),
 		Key:  Key(ev.Key),

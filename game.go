@@ -5,11 +5,11 @@ import "github.com/nsf/termbox-go"
 
 type Game struct {
 	screen *Screen
-	input  *Input
+	input  *input
 }
 
 func NewGame() *Game {
-	g := Game{screen: NewScreen(), input: NewInput()}
+	g := Game{screen: NewScreen(), input: newInput()}
 	return &g
 }
 
@@ -36,11 +36,11 @@ func (g *Game) Start() {
 		panic(err)
 	}
 	defer termbox.Close()
-	g.screen.Resize(termbox.Size())
+	g.screen.resize(termbox.Size())
 
 	// Init input
-	g.input.Start()
-	defer g.input.Stop()
+	g.input.start()
+	defer g.input.stop()
 	clock := time.Now()
 
 mainloop:
@@ -50,10 +50,11 @@ mainloop:
 			if ev.Key == g.input.endKey {
 				break mainloop
 			} else if EventType(ev.Type) == EventResize {
-				g.screen.Resize(ev.Width, ev.Height)
+				g.screen.resize(ev.Width, ev.Height)
 			}
-			g.screen.Tick(ConvertEvent(ev))
+			g.screen.Tick(convertEvent(ev))
 		default:
+			g.screen.Tick(Event{Type: EventNone})
 		}
 		update := time.Now()
 		g.screen.delta = update.Sub(clock).Seconds()
