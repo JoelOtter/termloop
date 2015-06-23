@@ -9,3 +9,9 @@ It also wraps some of the consts and structs provided by Termbox - ideally a use
 A proper tutorial will come soon - for now, check out the examples.
 
 Please note that I don't yet consider Termloop to be 'done', so changes are very likely to be breaking. Pull requests are of course very welcome, and please do file an issue with anything you think is missing, broken or desired.
+
+## Cool stuff built with Termloop
+
+- [Included examples](https://github.com/JoelOtter/termloop/tree/master/_examples) (@JoelOtter)
+
+_Feel free to add yours with a pull request!_
