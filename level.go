@@ -1,21 +1,29 @@
 package termloop
 
+// Level interface represents a Drawable with a separate background
+// that is drawn first.
 type Level interface {
 	DrawBackground(*Screen)
 	Draw(*Screen)
 	Tick(Event)
 }
 
+// BaseLevel type represents a Level with a background defined as a Cell,
+// and a slice of Drawables, entities, that are drawn after the background.
 type BaseLevel struct {
 	entities []Drawable
 	bg       Cell
 }
 
+// NewBaseLevel creates a new BaseLevel with background bg.
+// Returns a pointer to the new BaseLevel.
 func NewBaseLevel(bg Cell) *BaseLevel {
 	level := BaseLevel{entities: make([]Drawable, 0), bg: bg}
 	return &level
 }
 
+// Tick handles any collisions between Physicals in the level's entities,
+// and processes any input.
 func (l *BaseLevel) Tick(ev Event) {
 	// Handle collisions
 	colls := make([]Physical, 0)
@@ -45,6 +53,7 @@ func (l *BaseLevel) Tick(ev Event) {
 	}
 }
 
+// DrawBackground draws the background Cell bg to each Cell of the Screen s.
 func (l *BaseLevel) DrawBackground(s *Screen) {
 	for i, row := range s.canvas {
 		for j, _ := range row {
@@ -53,16 +62,19 @@ func (l *BaseLevel) DrawBackground(s *Screen) {
 	}
 }
 
+// Draw draws the level's entities to the Screen s.
 func (l *BaseLevel) Draw(s *Screen) {
 	for _, e := range l.entities {
 		e.Draw(s)
 	}
 }
 
+// AddEntity adds Drawable d to the level's entities.
 func (l *BaseLevel) AddEntity(d Drawable) {
 	l.entities = append(l.entities, d)
 }
 
+// RemoveEntity removes Drawable d from the level's entities.
 func (l *BaseLevel) RemoveEntity(d Drawable) {
 	for i, elem := range l.entities {
 		if elem == d {

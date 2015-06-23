@@ -2,15 +2,18 @@ package termloop
 
 import "github.com/nsf/termbox-go"
 
+// Drawable represents something that can be drawn, and placed in a Level.
 type Drawable interface {
-	Tick(Event)
-	Draw(*Screen)
+	Tick(Event)   // Method for processing events, e.g. input
+	Draw(*Screen) // Method for drawing to the screen
 }
 
+// Physical represents something that can collide.
+// Implementing this is an optional addition to Drawable.
 type Physical interface {
-	Position() (int, int)
-	Size() (int, int)
-	Collide(Physical)
+	Position() (int, int) // Return position, x and y
+	Size() (int, int)     // Return width and height
+	Collide(Physical)     // Handle collisions with another Physical
 }
 
 func min(a, b int) int {
@@ -22,17 +25,22 @@ func min(a, b int) int {
 
 // Abstract Termbox stuff for convenience - users
 // should only need Termloop imported
+
+// Represents a character to be drawn on the screen.
 type Cell struct {
-	Fg Attr
-	Bg Attr
-	Ch rune
+	Fg Attr // Foreground colour
+	Bg Attr // Background color
+	Ch rune // The character to draw
 }
 
+// Provides an event, for input, errors or resizing.
+// Resizing and errors are largely handled by Termloop itself
+// - this would largely be used for input.
 type Event struct {
-	Type EventType
-	Key  Key
-	Ch   rune
-	Mod  Modifier
+	Type EventType // The type of event
+	Key  Key       // The key pressed, if any
+	Ch   rune      // The character of the key, if any
+	Mod  Modifier  // A keyboard modifier, if any
 }
 
 func convertEvent(ev termbox.Event) Event {
@@ -51,6 +59,7 @@ type (
 	EventType uint8
 )
 
+// Types of event. For example, a keyboard press will be EventKey.
 const (
 	EventKey EventType = iota
 	EventResize
@@ -61,6 +70,8 @@ const (
 	EventNone
 )
 
+// Cell colors. You can combine these with multiple attributes using
+// a bitwise OR ('|'). Colors can't combine with other colors.
 const (
 	ColorDefault Attr = iota
 	ColorBlack
@@ -73,6 +84,7 @@ const (
 	ColorWhite
 )
 
+// Cell attributes. These can be combined with OR.
 const (
 	AttrBold Attr = 1 << (iota + 9)
 	AttrUnderline
@@ -81,6 +93,7 @@ const (
 
 const ModAltModifier = 0x01
 
+// Key constants. See Event.Key.
 const (
 	KeyF1 Key = 0xFFFF - iota
 	KeyF2
