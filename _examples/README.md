@@ -16,5 +16,5 @@ This example demonstrates how to use Termloop's built in collision checking, as 
 
 `go run collision.go`
 
-![](images/collision1.go)
-![](images/collision2.go)
+![](images/collision1.png)
+![](images/collision2.png)
