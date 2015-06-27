@@ -25,6 +25,13 @@ func NewBaseLevel(bg Cell) *BaseLevel {
 // Tick handles any collisions between Physicals in the level's entities,
 // and processes any input.
 func (l *BaseLevel) Tick(ev Event) {
+	// Handle input
+	if ev.Type != EventNone {
+		for _, e := range l.entities {
+			e.Tick(ev)
+		}
+	}
+
 	// Handle collisions
 	colls := make([]Physical, 0)
 	for _, e := range l.entities {
@@ -43,13 +50,6 @@ func (l *BaseLevel) Tick(ev Event) {
 	close(jobs)
 	for r := 0; r < len(colls); r++ {
 		<-results
-	}
-
-	// Handle input
-	if ev.Type != EventNone {
-		for _, e := range l.entities {
-			e.Tick(ev)
-		}
 	}
 }
 

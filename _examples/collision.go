@@ -5,6 +5,8 @@ import tl "github.com/joelotter/termloop"
 type CollRec struct {
 	r    *tl.Rectangle
 	move bool
+	px   int
+	py   int
 }
 
 // Implement necessary methods for Physical interface
@@ -15,19 +17,19 @@ func (r *CollRec) Position() (int, int) { return r.r.Position() }
 func (r *CollRec) Tick(ev tl.Event) {
 	// Enable arrow key movement
 	if ev.Type == tl.EventKey && r.move {
-		x, y := r.r.Position()
+		r.px, r.py = r.r.Position()
 		switch ev.Key {
 		case tl.KeyArrowRight:
-			r.r.SetPosition(x+1, y)
+			r.r.SetPosition(r.px+1, r.py)
 			break
 		case tl.KeyArrowLeft:
-			r.r.SetPosition(x-1, y)
+			r.r.SetPosition(r.px-1, r.py)
 			break
 		case tl.KeyArrowUp:
-			r.r.SetPosition(x, y-1)
+			r.r.SetPosition(r.px, r.py-1)
 			break
 		case tl.KeyArrowDown:
-			r.r.SetPosition(x, y+1)
+			r.r.SetPosition(r.px, r.py+1)
 			break
 		}
 	}
@@ -35,8 +37,9 @@ func (r *CollRec) Tick(ev tl.Event) {
 
 func (r *CollRec) Collide(p tl.Physical) {
 	// Check if it's a CollRec we're colliding with
-	if _, ok := p.(*CollRec); ok {
+	if _, ok := p.(*CollRec); ok && r.move {
 		r.r.SetColor(tl.ColorBlue)
+		r.r.SetPosition(r.px, r.py)
 	}
 }
 
