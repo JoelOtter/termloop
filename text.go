@@ -4,6 +4,9 @@ package termloop
 type Text struct {
 	x      int
 	y      int
+	fg     Attr
+	bg     Attr
+	text   []rune
 	canvas []Cell
 }
 
@@ -17,14 +20,22 @@ func NewText(x, y int, text string, fg, bg Attr) *Text {
 	for i := range c {
 		c[i] = Cell{Ch: str[i], Fg: fg, Bg: bg}
 	}
-	return &Text{x: x, y: y, canvas: c}
+	return &Text{
+		x:      x,
+		y:      y,
+		fg:     fg,
+		bg:     bg,
+		text:   str,
+		canvas: c,
+	}
 }
 
 func (t *Text) Tick(ev Event) {}
 
 // Draw draws the Text to the Screen s.
 func (t *Text) Draw(s *Screen) {
-	for i := 0; i < min(s.width-t.x, len(t.canvas)); i++ {
+	w, _ := t.Size()
+	for i := 0; i < min(s.width-t.x, w); i++ {
 		if t.x+i >= 0 && t.y >= 0 && t.y < s.height {
 			s.RenderCell(t.x+i, t.y, &t.canvas[i])
 		}
@@ -38,11 +49,38 @@ func (t *Text) Position() (int, int) {
 
 // Size returns the width and height of the Text.
 func (t *Text) Size() (int, int) {
-	return len(t.canvas), 1
+	return len(t.text), 1
 }
 
 // SetPosition sets the coordinates of the Text to be (x, y).
 func (t *Text) SetPosition(x, y int) {
 	t.x = x
 	t.y = y
+}
+
+// Text returns the text of the Text.
+func (t *Text) Text() string {
+	return string(t.text)
+}
+
+// SetText sets the text of the Text to be text.
+func (t *Text) SetText(text string) {
+	t.text = []rune(text)
+	c := make([]Cell, len(t.text))
+	for i := range c {
+		c[i] = Cell{Ch: t.text[i], Fg: t.fg, Bg: t.bg}
+	}
+	t.canvas = c
+}
+
+// Color returns the (foreground, background) colors of the Text.
+func (t *Text) Color() (Attr, Attr) {
+	return t.fg, t.bg
+}
+
+// SetColor sets the (foreground, background) colors of the Text
+// to fg, bg respectively.
+func (t *Text) SetColor(fg, bg Attr) {
+	t.fg = fg
+	t.bg = bg
 }

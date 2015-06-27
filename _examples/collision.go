@@ -54,5 +54,6 @@ func main() {
 		move: false,
 	})
 	g.SetLevel(l)
+	g.AddEntity(tl.NewFpsText(0, 0, tl.ColorRed, tl.ColorDefault, 0.5))
 	g.Start()
 }
