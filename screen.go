@@ -23,6 +23,8 @@ type Screen struct {
 	width    int
 	height   int
 	delta    float64
+	offsetx  int
+	offsety  int
 }
 
 // NewScreen creates a new Screen, with no entities or level.
@@ -98,7 +100,20 @@ func (s *Screen) TimeDelta() float64 {
 // RenderCell updates the Cell at a given position on the Screen
 // with the attributes in Cell c.
 func (s *Screen) RenderCell(x, y int, c *Cell) {
-	renderCell(&s.canvas[x][y], c)
+	newx := x + s.offsetx
+	newy := y + s.offsety
+	if newx >= 0 && newx < len(s.canvas) &&
+		newy >= 0 && newy < len(s.canvas[0]) {
+		renderCell(&s.canvas[newx][newy], c)
+	}
+}
+
+func (s *Screen) offset() (int, int) {
+	return s.offsetx, s.offsety
+}
+
+func (s *Screen) setOffset(x, y int) {
+	s.offsetx, s.offsety = x, y
 }
 
 func renderCell(old, new_ *Cell) {

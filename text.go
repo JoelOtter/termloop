@@ -35,10 +35,8 @@ func (t *Text) Tick(ev Event) {}
 // Draw draws the Text to the Screen s.
 func (t *Text) Draw(s *Screen) {
 	w, _ := t.Size()
-	for i := 0; i < min(s.width-t.x, w); i++ {
-		if t.x+i >= 0 && t.y >= 0 && t.y < s.height {
-			s.RenderCell(t.x+i, t.y, &t.canvas[i])
-		}
+	for i := 0; i < w; i++ {
+		s.RenderCell(t.x+i, t.y, &t.canvas[i])
 	}
 }
 

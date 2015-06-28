@@ -27,11 +27,9 @@ func NewEntity(x, y, width, height int) *Entity {
 // Draw draws the entity to its current position on the screen.
 // This is usually called every frame.
 func (e *Entity) Draw(s *Screen) {
-	for i := 0; i < min(s.width-e.x, e.width); i++ {
-		for j := 0; j < min(s.height-e.y, e.height); j++ {
-			if e.x+i >= 0 && e.y+j >= 0 {
-				s.RenderCell(e.x+i, e.y+j, &e.canvas[i][j])
-			}
+	for i := 0; i < e.width; i++ {
+		for j := 0; j < e.height; j++ {
+			s.RenderCell(e.x+i, e.y+j, &e.canvas[i][j])
 		}
 	}
 }
