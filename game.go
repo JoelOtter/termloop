@@ -32,6 +32,11 @@ func (g *Game) SetLevel(l Level) {
 	g.screen.level = l
 }
 
+// Level returns the game's current level.
+func (g *Game) Level() Level {
+	return g.screen.level
+}
+
 // AddEntity adds a Drawable to the Game's current Screen, to be rendered.
 func (g *Game) AddEntity(d Drawable) {
 	g.screen.entities = append(g.screen.entities, d)

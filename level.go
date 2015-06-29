@@ -36,21 +36,26 @@ func (l *BaseLevel) Tick(ev Event) {
 
 	// Handle collisions
 	colls := make([]Physical, 0)
+	dynamics := make([]DynamicPhysical, 0)
 	for _, e := range l.entities {
 		if p, ok := interface{}(e).(Physical); ok {
 			colls = append(colls, p)
 		}
+		if p, ok := interface{}(e).(DynamicPhysical); ok {
+			dynamics = append(dynamics, p)
+		}
+
 	}
-	jobs := make(chan Physical, len(colls))
-	results := make(chan int, len(colls))
-	for w := 0; w <= len(colls)/3; w++ {
+	jobs := make(chan DynamicPhysical, len(dynamics))
+	results := make(chan int, len(dynamics))
+	for w := 0; w <= len(dynamics)/3; w++ {
 		go checkCollisionsWorker(colls, jobs, results)
 	}
-	for _, p := range colls {
+	for _, p := range dynamics {
 		jobs <- p
 	}
 	close(jobs)
-	for r := 0; r < len(colls); r++ {
+	for r := 0; r < len(dynamics); r++ {
 		<-results
 	}
 }
@@ -101,7 +106,7 @@ func (l *BaseLevel) SetOffset(x, y int) {
 	l.offsetx, l.offsety = x, y
 }
 
-func checkCollisionsWorker(ps []Physical, jobs <-chan Physical, results chan<- int) {
+func checkCollisionsWorker(ps []Physical, jobs <-chan DynamicPhysical, results chan<- int) {
 	for p := range jobs {
 		for _, c := range ps {
 			if c == p {
@@ -113,7 +118,6 @@ func checkCollisionsWorker(ps []Physical, jobs <-chan Physical, results chan<- i
 			cw, ch := c.Size()
 			if px < cx+cw && px+pw > cx &&
 				py < cy+ch && py+ph > cy {
-				c.Collide(p)
 				p.Collide(c)
 			}
 		}
