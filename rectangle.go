@@ -21,7 +21,7 @@ func NewRectangle(x, y, w, h int, color Attr) *Rectangle {
 func (r *Rectangle) Draw(s *Screen) {
 	for i := 0; i < r.width; i++ {
 		for j := 0; j < r.height; j++ {
-			s.RenderCell(r.x+i, r.y+j, &Cell{Bg: r.color})
+			s.RenderCell(r.x+i, r.y+j, &Cell{Bg: r.color, Ch: ' '})
 		}
 	}
 }
