@@ -8,6 +8,9 @@ Termloop is a pure Go game engine for the terminal, built on top of the excellen
 
 Termloop is still under active development so changes may be breaking. Pull requests and issues are *very* welcome, and do feel free to ask any questions you might have on the Gitter. I hope you enjoy using Termloop; I've had a blast making it.
 
+## Installing
+Install and update with `go get -u github.com/JoelOtter/termloop`
+
 ## Features
 
 - Collision detection
@@ -18,6 +21,7 @@ Termloop is still under active development so changes may be breaking. Pull requ
  - Framerate counters
  - Rectangles
  - Text
+- Pure Go - easy portability of compiled games, and cross-compilation built right in.
 
 *To see what's on the roadmap, have a look at the [issue tracker](https://github.com/JoelOtter/termloop/issues).*
 
@@ -29,7 +33,7 @@ _Feel free to add yours with a pull request!_
 
 ## Tutorial
 
-*A proper tutorial will be added to the wiki soon - for now, check out the short introduction below, or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).*
+*More full documentation will be added to the Wiki soon. In the meantime, check out this tutorial, the [GoDoc](http://godoc.org/github.com/JoelOtter/termloop), or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).*
 
 Creating a blank Termloop game is as simple as:
 
@@ -63,6 +67,8 @@ Let's make a nice pretty lake, too. We'll use a [Rectangle](http://godoc.org/git
 ```go
 l.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
 ```
+
+We don't need to use a Level - we can add entities directly to the [Screen](http://godoc.org/github.com/JoelOtter/termloop#Screen)! This is great for building a HUD, or a very simple app. However, if we want camera scrolling or collision detection, we're going to need to use a Level.
 
 Putting together what we have so far:
 
@@ -138,4 +144,100 @@ l.AddEntity(&p)
 
 Running the game again, we see that we can now move around the map using the arrow keys. Neato! However, we can stroll across the lake just as easily as the grass. Our character isn't the Messiah, ~~he's a very naughty boy,~~ so let's add some collisions.
 
-*Collision tutorial to follow...*
+In Termloop, we have two interfaces that are used for collisions. Here they are.
+
+```go
+// Physical represents something that can collide with another
+// Physical, but cannot process its own collisions.
+// Optional addition to Drawable.
+type Physical interface {
+	Position() (int, int) // Return position, x and y
+	Size() (int, int)     // Return width and height
+}
+
+// DynamicPhysical represents something that can process its own collisions.
+// Implementing this is an optional addition to Drawable.
+type DynamicPhysical interface {
+	Position() (int, int) // Return position, x and y
+	Size() (int, int)     // Return width and height
+	Collide(Physical)     // Handle collisions with another Physical
+}
+```
+
+It's pretty simple - if we want our object to be 'solid', then we implement Physical. If we want a solid object that actually does some processing on its own collisions, we implement DynamicPhysical! Essentially this just involves adding one more method to your type.
+
+Note that, for performance reasons, you should try and have as few DynamicPhysicals as possible - for example, our Player will be one, but the lake need only be a Physical.
+
+The Rectangle type already implements Physical, so we don't actually need to do anything. Let's go ahead and add our methods for Player. We'll have to modify our struct and Tick method, to keep track of the Player's previous position so we can move it back there if it collides with something.
+
+```go
+type Player struct {
+	ent *tl.Entity
+	px  int
+	py  int
+}
+
+func (p *Player) Tick(ev tl.Event) {
+	if ev.Type == tl.EventKey { // Is it a keyboard event?
+		p.px, p.py = p.ent.Position()
+		switch ev.Key { // If so, switch on the pressed key.
+		case tl.KeyArrowRight:
+			p.ent.SetPosition(p.px+1, p.py)
+			break
+		case tl.KeyArrowLeft:
+			p.ent.SetPosition(p.px-1, p.py)
+			break
+		case tl.KeyArrowUp:
+			p.ent.SetPosition(p.px, p.py-1)
+			break
+		case tl.KeyArrowDown:
+			p.ent.SetPosition(p.px, p.py+1)
+			break
+		}
+	}
+}
+
+func (p *Player) Size() (int, int)     { return p.ent.Size() }
+func (p *Player) Position() (int, int) { return p.ent.Position() }
+
+func (p *Player) Collide(c tl.Physical) {
+	// Check if it's a Rectangle we're colliding with
+	if _, ok := c.(*tl.Rectangle); ok {
+		p.ent.SetPosition(p.px, p.py)
+	}
+}
+```
+
+Not too much extra code! We can now see that the Player can't walk out into the lake. If you see the Player overlap the lake slightly on one side, that's likely because the 'stick man' character we used isn't quite standard width.
+
+We've now got something that looks a bit like a very simple exploration game. There's one more thing to add - let's have the camera scroll to keep the Player in the centre of the screen!
+
+There isn't really a 'camera' in Termloop, like you might find in another graphics library. Instead, we set an offset, and the Screen draws our level appropriately. In our case it's really simple - all we need is for the Player to have a pointer to the Level, so we can make calls on it. Then we simply modify our Draw method, like so:
+
+```go
+type Player struct {
+	ent   *tl.Entity
+	px    int
+	py    int
+	level *tl.BaseLevel
+}
+
+func (p *Player) Draw(s *tl.Screen) {
+	sw, sh := s.Size()
+	x, y := p.ent.Position()
+	p.level.SetOffset(sw/2-x, sh/2-y)
+	p.ent.Draw(s)
+}
+
+// in func main
+p := Player{
+	ent:   tl.NewEntity(1, 1, 1, 1),
+	level: l,
+}
+```
+
+That's all it takes. We should now see the camera moving. Of course, due to the static, repeating background, this doesn't look terribly convincing - it kind of looks like the player is standing still and everything else is moving! We could remedy this by, for example, only updating the offset when the player is closer to the edge of the screen. I'll leave it up to you as a challenge.
+
+![](_examples/images/tutorial03.png)
+
+We've now reached the end of our tutorial - I hope it's been useful! If you'd like to learn a little more about Termloop, more comprehensive documentation is coming on the Wiki. In the meantime, you can check out the [GoDoc](http://godoc.org/github.com/JoelOtter/termloop), or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). I'll be hanging out on the [Gitter](https://gitter.im/JoelOtter/termloop) too, if you have any questions. Have fun, and please do show me if you make something cool!
