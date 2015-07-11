@@ -49,6 +49,7 @@ type Event struct {
 	Key  Key       // The key pressed, if any
 	Ch   rune      // The character of the key, if any
 	Mod  Modifier  // A keyboard modifier, if any
+	Err  error     // Error, if any
 }
 
 func convertEvent(ev termbox.Event) Event {
@@ -57,6 +58,7 @@ func convertEvent(ev termbox.Event) Event {
 		Key:  Key(ev.Key),
 		Ch:   ev.Ch,
 		Mod:  Modifier(ev.Mod),
+		Err:  ev.Err,
 	}
 }
 

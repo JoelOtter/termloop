@@ -24,6 +24,7 @@ This example demonstrates how to use Termloop's built in collision checking, as 
 You've started at the top of a pyramid - how many levels down can you get before you're helplessly lost?
 
 This is a bit of a bigger example, showcasing Termloop's collision detection, as well as level offsets, which can be used to simulate camera movement. The mazes are all randomly generated using [Prim's algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim.27s_algorithm).
+This example also gives a demo of how Termloop's debug logging works.
 
 To run:
 

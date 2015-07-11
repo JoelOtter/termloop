@@ -178,6 +178,7 @@ func buildLevel(g *tl.Game, w, h, score int) {
 	maze := generateMaze(w, h)
 	l := tl.NewBaseLevel(tl.Cell{})
 	g.SetLevel(l)
+	g.Log("Building level with width %d and height %d", w, h)
 	scoretext := tl.NewText(0, 1, "Levels explored: "+strconv.Itoa(score),
 		tl.ColorBlue, tl.ColorBlack)
 	g.AddEntity(tl.NewText(0, 0, "Pyramid!", tl.ColorBlue, tl.ColorBlack))
@@ -198,5 +199,6 @@ func buildLevel(g *tl.Game, w, h, score int) {
 func main() {
 	g := tl.NewGame()
 	buildLevel(g, 6, 2, 0)
+	g.SetDebugOn(true)
 	g.Start()
 }
