@@ -43,8 +43,8 @@ package main
 import tl "github.com/JoelOtter/termloop"
 
 func main() {
-	g := tl.NewGame()
-	g.Start()
+	game := tl.NewGame()
+	game.Start()
 }
 ```
 
@@ -53,7 +53,7 @@ We can press the Escape key to exit. It's just a blank screen - let's make it a 
 Let's make a green background, because grass is really nice to run around on. We create a new level like so:
 
 ```go
-l := tl.NewBaseLevel(tl.Cell{
+level := tl.NewBaseLevel(tl.Cell{
 	Bg: tl.ColorGreen,
 	Fg: tl.ColorBlack,
 	Ch: '|',
@@ -65,7 +65,7 @@ Cell is a struct that represents one cell on the terminal. We can set its backgr
 Let's make a nice pretty lake, too. We'll use a [Rectangle](http://godoc.org/github.com/JoelOtter/termloop#Rectangle) for this. We'll put the lake at position (10, 10), with width 50 and height 10. All measurements are in terminal characters! The last argument is the colour of the Rectangle.
 
 ```go
-l.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
+level.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
 ```
 
 We don't need to use a Level - we can add entities directly to the [Screen](http://godoc.org/github.com/JoelOtter/termloop#Screen)! This is great for building a HUD, or a very simple app. However, if we want camera scrolling or collision detection, we're going to need to use a Level.
@@ -78,15 +78,15 @@ package main
 import tl "github.com/JoelOtter/termloop"
 
 func main() {
-	g := tl.NewGame()
-	l := tl.NewBaseLevel(tl.Cell{
+	game := tl.NewGame()
+	level := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorGreen,
 		Fg: tl.ColorBlack,
 		Ch: 'v',
 	})
-	l.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
-	g.SetLevel(l)
-	g.Start()
+	level.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
+	game.SetLevel(level)
+	game.Start()
 }
 ```
 
@@ -100,28 +100,30 @@ To have Termloop draw our new type, we need to implement the [Drawable](http://g
 
 ```go
 type Player struct {
-	ent *tl.Entity
+	entity *tl.Entity
 }
 
 // Here, Draw simply tells the Entity ent to handle its own drawing.
 // We don't need to do anything.
-func (p *Player) Draw(s *tl.Screen) { p.ent.Draw(s) }
+func (player *Player) Draw(screen *tl.Screen) {
+	player.entity.Draw(screen)
+}
 
-func (p *Player) Tick(ev tl.Event) {
-	if ev.Type == tl.EventKey { // Is it a keyboard event?
-		x, y := p.ent.Position()
-		switch ev.Key { // If so, switch on the pressed key.
+func (player *Player) Tick(event tl.Event) {
+	if event.Type == tl.EventKey { // Is it a keyboard event?
+		x, y := player.event.Position()
+		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
-			p.ent.SetPosition(x+1, y)
+			player.entity.SetPosition(x+1, y)
 			break
 		case tl.KeyArrowLeft:
-			p.ent.SetPosition(x-1, y)
+			player.entity.SetPosition(x-1, y)
 			break
 		case tl.KeyArrowUp:
-			p.ent.SetPosition(x, y-1)
+			player.entity.SetPosition(x, y-1)
 			break
 		case tl.KeyArrowDown:
-			p.ent.SetPosition(x, y+1)
+			player.entity.SetPosition(x, y+1)
 			break
 		}
 	}
@@ -131,12 +133,12 @@ func (p *Player) Tick(ev tl.Event) {
 Now that we've built our Player type, let's add one to the level. I'm going to use the character '옷', because I think it looks a bit like a stick man.
 
 ```go
-p := Player{
-	ent: tl.NewEntity(1, 1, 1, 1),
+player := Player{
+	entity: tl.NewEntity(1, 1, 1, 1),
 }
 // Set the character at position (0, 0) on the entity.
-p.ent.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '옷'})
-l.AddEntity(&p)
+player.entity.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '옷'})
+level.AddEntity(&player)
 
 ```
 
@@ -172,40 +174,46 @@ The Rectangle type already implements Physical, so we don't actually need to do 
 
 ```go
 type Player struct {
-	ent *tl.Entity
-	px  int
-	py  int
+	entity *tl.Entity
+	prevX  int
+	prevY  int
 }
 
-func (p *Player) Tick(ev tl.Event) {
-	if ev.Type == tl.EventKey { // Is it a keyboard event?
-		p.px, p.py = p.ent.Position()
-		switch ev.Key { // If so, switch on the pressed key.
+func (player *Player) Tick(event tl.Event) {
+	if event.Type == tl.EventKey { // Is it a keyboard event?
+		player.prevX, player.prevY = player.entity.Position()
+		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
-			p.ent.SetPosition(p.px+1, p.py)
+			player.entity.SetPosition(player.prevX+1, player.prevY)
 			break
 		case tl.KeyArrowLeft:
-			p.ent.SetPosition(p.px-1, p.py)
+			player.entity.SetPosition(player.prevX-1, player.prevY)
 			break
 		case tl.KeyArrowUp:
-			p.ent.SetPosition(p.px, p.py-1)
+			player.entity.SetPosition(player.prevX, player.prevY-1)
 			break
 		case tl.KeyArrowDown:
-			p.ent.SetPosition(p.px, p.py+1)
+			player.entity.SetPosition(player.prevX, player.prevY+1)
 			break
 		}
 	}
 }
 
-func (p *Player) Size() (int, int)     { return p.ent.Size() }
-func (p *Player) Position() (int, int) { return p.ent.Position() }
+func (player *Player) Size() (int, int) {
+	return player.entity.Size()
+}
 
-func (p *Player) Collide(c tl.Physical) {
+func (player *Player) Position() (int, int) {
+	return player.entity.Position()
+}
+
+func (player *Player) Collide(collision tl.Physical) {
 	// Check if it's a Rectangle we're colliding with
-	if _, ok := c.(*tl.Rectangle); ok {
-		p.ent.SetPosition(p.px, p.py)
+	if _, ok := collision.(*tl.Rectangle); ok {
+		player.entity.SetPosition(player.prevX, player.prevY)
 	}
 }
+
 ```
 
 Not too much extra code! We can now see that the Player can't walk out into the lake. If you see the Player overlap the lake slightly on one side, that's likely because the 'stick man' character we used isn't quite standard width.
@@ -216,23 +224,24 @@ There isn't really a 'camera' in Termloop, like you might find in another graphi
 
 ```go
 type Player struct {
-	ent   *tl.Entity
-	px    int
-	py    int
-	level *tl.BaseLevel
+	entity *tl.Entity
+	prevX  int
+	prevY  int
+	level  *tl.BaseLevel
 }
 
-func (p *Player) Draw(s *tl.Screen) {
-	sw, sh := s.Size()
-	x, y := p.ent.Position()
-	p.level.SetOffset(sw/2-x, sh/2-y)
-	p.ent.Draw(s)
+func (player *Player) Draw(screen *tl.Screen) {
+	screenWidth, screenHeight := screen.Size()
+	x, y := player.entity.Position()
+	player.level.SetOffset(screenWidth/2-x, screenHeight/2-y)
+	player.entity.Draw(screen)
 }
+
 
 // in func main
-p := Player{
-	ent:   tl.NewEntity(1, 1, 1, 1),
-	level: l,
+player := Player{
+	entity:   tl.NewEntity(1, 1, 1, 1),
+	level: level,
 }
 ```
 
