@@ -29,7 +29,7 @@ _Feel free to add yours with a pull request!_
 
 ## Tutorial
 
-*A proper tutorial will be added to the wiki soon - for now, check out the short introduction below, or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).
+*A proper tutorial will be added to the wiki soon - for now, check out the short introduction below, or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).*
 
 Creating a blank Termloop game is as simple as:
 
