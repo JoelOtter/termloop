@@ -33,7 +33,7 @@ _Feel free to add yours with a pull request!_
 
 ## Tutorial
 
-*More full documentation will be added to the Wiki soon. In the meantime, check out this tutorial, the [GoDoc](http://godoc.org/github.com/JoelOtter/termloop), or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).*
+> More full documentation will be added to the Wiki soon. In the meantime, check out this tutorial, the [GoDoc](http://godoc.org/github.com/JoelOtter/termloop), or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).
 
 Creating a blank Termloop game is as simple as:
 
@@ -56,13 +56,13 @@ Let's make a green background, because grass is really nice to run around on. We
 level := tl.NewBaseLevel(tl.Cell{
 	Bg: tl.ColorGreen,
 	Fg: tl.ColorBlack,
-	Ch: '|',
+	Ch: 'v',
 })
 ```
 
 Cell is a struct that represents one cell on the terminal. We can set its background and foreground colours, and the character that is displayed. Creating a [BaseLevel](http://godoc.org/github.com/JoelOtter/termloop#BaseLevel) in this way will fill the level with this Cell.
 
-Let's make a nice pretty lake, too. We'll use a [Rectangle](http://godoc.org/github.com/JoelOtter/termloop#Rectangle) for this. We'll put the lake at position (10, 10), with width 50 and height 10. All measurements are in terminal characters! The last argument is the colour of the Rectangle.
+Let's make a nice pretty lake, too. We'll use a [Rectangle](http://godoc.org/github.com/JoelOtter/termloop#Rectangle) for this. We'll put the lake at position (10, 10), with width 50 and height 20. All measurements are in terminal characters! The last argument is the colour of the Rectangle.
 
 ```go
 level.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
@@ -111,7 +111,7 @@ func (player *Player) Draw(screen *tl.Screen) {
 
 func (player *Player) Tick(event tl.Event) {
 	if event.Type == tl.EventKey { // Is it a keyboard event?
-		x, y := player.event.Position()
+		x, y := player.entity.Position()
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
 			player.entity.SetPosition(x+1, y)
