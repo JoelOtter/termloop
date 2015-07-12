@@ -1,6 +1,6 @@
 ## Termloop
 
-[![Join the chat at https://gitter.im/JoelOtter/termloop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JoelOtter/termloop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) | [GoDoc](http://godoc.org/github.com/JoelOtter/termloop)
+[![Join the chat at https://gitter.im/JoelOtter/termloop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JoelOtter/termloop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GoDoc](https://godoc.org/github.com/JoelOtter/termloop?status.svg)](http://godoc.org/github.com/JoelOtter/termloop)
 
 ![](_examples/images/maze.png)
 
