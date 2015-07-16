@@ -1,7 +1,5 @@
 package termloop
 
-import "github.com/nsf/termbox-go"
-
 // Provides a general Drawable to be rendered.
 type Entity struct {
 	canvas Canvas
@@ -34,7 +32,7 @@ func (e *Entity) Draw(s *Screen) {
 	}
 }
 
-func (e *Entity) Tick(ev termbox.Event) {}
+func (e *Entity) Tick(ev Event) {}
 
 // Position returns the (x, y) coordinates of the Entity.
 func (e *Entity) Position() (int, int) {
