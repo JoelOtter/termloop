@@ -55,3 +55,13 @@ func (e *Entity) SetPosition(x, y int) {
 func (e *Entity) SetCell(x, y int, c *Cell) {
 	renderCell(&e.canvas[x][y], c)
 }
+
+// Fill fills the canvas of the Entity with
+// a Cell c.
+func (e *Entity) Fill(c *Cell) {
+	for i := range e.canvas {
+		for j := range e.canvas[i] {
+			renderCell(&e.canvas[i][j], c)
+		}
+	}
+}
