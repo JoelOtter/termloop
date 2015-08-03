@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	tl "github.com/joelotter/termloop"
+	tl "github.com/JoelOtter/termloop"
 	"os"
 )
 
