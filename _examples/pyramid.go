@@ -1,7 +1,7 @@
 package main
 
 import (
-	tl "github.com/joelotter/termloop"
+	tl "github.com/JoelOtter/termloop"
 	"math/rand"
 	"strconv"
 	"time"
