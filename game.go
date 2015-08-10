@@ -86,6 +86,7 @@ func (g *Game) dumpLogs() {
 func (g *Game) Start() {
 	// Init Termbox
 	err := termbox.Init()
+	termbox.SetOutputMode(termbox.Output256)
 	if err != nil {
 		panic(err)
 	}

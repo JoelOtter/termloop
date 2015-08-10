@@ -38,3 +38,25 @@ func (f *FpsText) Draw(s *Screen) {
 	}
 	f.text.Draw(s)
 }
+
+func numTuples(x int, points [5]int) int {
+	n := 0
+	for _, p := range points {
+		if x <= p {
+			break
+		} else {
+			n++
+		}
+	}
+	return n
+}
+
+// RgbTo256Color takes RGB values and returns the closest color for
+// a 256-color terminal, as an Attr type.
+func RgbTo256Color(r, g, b int) Attr {
+	cubepoints := [5]int{47, 115, 155, 195, 235}
+	r256 := numTuples(r, cubepoints)
+	g256 := numTuples(g, cubepoints)
+	b256 := numTuples(b, cubepoints)
+	return Attr(r256*36 + g256*6 + b256 + 16)
+}
