@@ -188,8 +188,8 @@ func buildLevel(g *tl.Game, w, h, score int) {
 			if path == '*' {
 				l.AddEntity(tl.NewRectangle(i, j, 1, 1, tl.ColorWhite))
 			} else if path == 'S' {
-				col := tl.RgbTo256Color(0xff, 0x33, 0x33)
-				l.AddEntity(NewBlock(i, j, col+1, g, w, h, score, scoretext))
+				col := tl.RgbTo256Color(0xff, 0, 0)
+				l.AddEntity(NewBlock(i, j, col, g, w, h, score, scoretext))
 			} else if path == 'L' {
 				l.AddEntity(tl.NewRectangle(i, j, 1, 1, tl.ColorBlue))
 			}

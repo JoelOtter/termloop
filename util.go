@@ -58,5 +58,5 @@ func RgbTo256Color(r, g, b int) Attr {
 	r256 := numTuples(r, cubepoints)
 	g256 := numTuples(g, cubepoints)
 	b256 := numTuples(b, cubepoints)
-	return Attr(r256*36 + g256*6 + b256 + 16)
+	return Attr(r256*36 + g256*6 + b256 + 17)
 }
