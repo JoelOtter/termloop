@@ -65,3 +65,14 @@ func (e *Entity) Fill(c *Cell) {
 		}
 	}
 }
+
+// ApplyCanvas takes a pointer to a Canvas, c, and applies this canvas
+// over the top of the Entity's canvas. Any new values in c will overwrite
+// those in the entity.
+func (e *Entity) ApplyCanvas(c *Canvas) {
+	for i := 0; i < min(len(e.canvas), len(*c)); i++ {
+		for j := 0; j < min(len(e.canvas[0]), len((*c)[0])); j++ {
+			renderCell(&e.canvas[i][j], &(*c)[i][j])
+		}
+	}
+}

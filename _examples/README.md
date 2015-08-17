@@ -31,3 +31,9 @@ To run:
 `go run pyramid.go`
 
 ![](images/pyramid.png)
+
+## image.go
+
+This example shows Termloop's image loading capabilities. Simply run the example with a path to an image as the first parameter, and you'll see a very simple image viewer. It can load PNG, JPEG or GIF images. Here's an example of what it looks like showing [Tempa T](http://www.youtube.com/watch?v=OZ6G7qwjom4).
+
+![](images/image.png)
