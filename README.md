@@ -21,18 +21,27 @@ Install and update with `go get -u github.com/JoelOtter/termloop`
  - Framerate counters
  - Rectangles
  - Text
+- Loading colour maps from images
 - Pure Go - easy portability of compiled games, and cross-compilation built right in.
 
 *To see what's on the roadmap, have a look at the [issue tracker](https://github.com/JoelOtter/termloop/issues).*
 
-## Cool stuff built with Termloop
+## termloop/extra
 
+The Termloop extras are a collection of types and functions, the use of which will not result in a fully portable binary - that is, they have some external dependencies. However, if you're willing to require these dependencies in your project, they should integrate quite nicely with the rest of Termloop. Some of the included examples use these extras.
+
+- Audio playback 
+ - audio.go
+ - Requirements: PortAudio and libsndfile
+
+## Cool stuff built with Termloop
+ 
 - [Included examples](https://github.com/JoelOtter/termloop/tree/master/_examples) (@JoelOtter)
 
 _Feel free to add yours with a pull request!_
 
 ## Tutorial
-
+ 
 > More full documentation will be added to the Wiki soon. In the meantime, check out this tutorial, the [GoDoc](http://godoc.org/github.com/JoelOtter/termloop), or the [included examples](https://github.com/JoelOtter/termloop/tree/master/_examples). If you get stuck during this tutorial, worry not, the full source is [here](https://github.com/JoelOtter/termloop/blob/master/_examples/tutorial.go).
 
 Creating a blank Termloop game is as simple as:
