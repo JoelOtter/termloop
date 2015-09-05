@@ -21,6 +21,7 @@ Install and update with `go get -u github.com/JoelOtter/termloop`
  - Framerate counters
  - Rectangles
  - Text
+- Loading entities from ASCII art
 - Loading colour maps from images
 - Pure Go - easy portability of compiled games, and cross-compilation built right in.
 
