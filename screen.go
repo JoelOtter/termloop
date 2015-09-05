@@ -2,17 +2,6 @@ package termloop
 
 import "github.com/nsf/termbox-go"
 
-// A Canvas is a 2D array of Cells, used for drawing
-type Canvas [][]Cell
-
-func newCanvas(width, height int) Canvas {
-	canvas := make(Canvas, width)
-	for i := range canvas {
-		canvas[i] = make([]Cell, height)
-	}
-	return canvas
-}
-
 // A Screen represents the current state of the display.
 // To draw on the screen, create Drawables and set their positions.
 // Then, add them to the Screen's Level, or to the Screen directly (e.g. a HUD).
@@ -62,8 +51,8 @@ func (s *Screen) Draw() {
 		e.Draw(s)
 	}
 	// Draw to terminal
-	for i, row := range s.canvas {
-		for j, cell := range row {
+	for i, col := range s.canvas {
+		for j, cell := range col {
 			termbox.SetCell(i, j, cell.Ch,
 				termbox.Attribute(cell.Fg),
 				termbox.Attribute(cell.Bg))

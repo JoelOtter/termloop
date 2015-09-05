@@ -1,6 +1,48 @@
 package termloop
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"strings"
+)
+
+// A Canvas is a 2D array of Cells, used for drawing.
+// The structure of a Canvas is an array of columns.
+// This is so it can be addrssed canvas[x][y].
+type Canvas [][]Cell
+
+// NewCanvas returns a new Canvas, with
+// width and height defined by arguments.
+func newCanvas(width, height int) Canvas {
+	canvas := make(Canvas, width)
+	for i := range canvas {
+		canvas[i] = make([]Cell, height)
+	}
+	return canvas
+}
+
+// CanvasFromString returns a new Canvas, built from
+// the characters in the string str. Newline characters in
+// the string are interpreted as a new Canvas row.
+func CanvasFromString(str string) Canvas {
+	lines := strings.Split(str, "\n")
+	runes := make([][]rune, len(lines))
+	width := 0
+	for i := range lines {
+		runes[i] = []rune(lines[i])
+		width = max(width, len(runes[i]))
+	}
+	height := len(runes)
+	canvas := make(Canvas, width)
+	for i := 0; i < width; i++ {
+		canvas[i] = make([]Cell, height)
+		for j := 0; j < height; j++ {
+			if i < len(runes[j]) {
+				canvas[i][j] = Cell{Ch: runes[j][i]}
+			}
+		}
+	}
+	return canvas
+}
 
 // Drawable represents something that can be drawn, and placed in a Level.
 type Drawable interface {
@@ -26,6 +68,13 @@ type DynamicPhysical interface {
 
 func min(a, b int) int {
 	if a < b {
+		return a
+	}
+	return b
+}
+
+func max(a, b int) int {
+	if a > b {
 		return a
 	}
 	return b

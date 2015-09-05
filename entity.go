@@ -13,12 +13,23 @@ type Entity struct {
 // (width, height).
 // Returns a pointer to the new Entity.
 func NewEntity(x, y, width, height int) *Entity {
-	canvas := make(Canvas, width)
-	for i := range canvas {
-		canvas[i] = make([]Cell, height)
-	}
+	canvas := newCanvas(width, height)
 	e := Entity{x: x, y: y, width: width, height: height,
 		canvas: canvas}
+	return &e
+}
+
+// NewEntityFromCanvas returns a pointer to a new Entity, with
+// position (x, y) and Canvas c. Width and height are calculated
+// using the Canvas.
+func NewEntityFromCanvas(x, y int, c Canvas) *Entity {
+	e := Entity{
+		x:      x,
+		y:      y,
+		canvas: c,
+		width:  len(c),
+		height: len(c[0]),
+	}
 	return &e
 }
 

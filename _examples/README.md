@@ -37,3 +37,27 @@ To run:
 This example shows Termloop's image loading capabilities. Simply run the example with a path to an image as the first parameter, and you'll see a very simple image viewer. It can load PNG, JPEG or GIF images. Here's an example of what it looks like showing [Tempa T](http://www.youtube.com/watch?v=OZ6G7qwjom4).
 
 ![](images/image.png)
+
+## entityfromfile.go
+
+This example shows Termloop's ability to generate an Entity from ASCII art provided to it as a string. This example loads the file lorry.txt, and renders its contents to the screen.
+
+To run:
+
+`go run entityfromfile.go`
+
+![](images/entityfromfile.png)
+
+# Termloop extras examples
+
+These examples use the termloop/extra package, which means that they have some external dependencies and may not run without some additional libraries being installed.
+
+## audio.go
+
+Provides a very simple audio player. Depends on PortAudio and libsndfile being installed. Supported file types are whatever is supported by libsndfile - for example, WAV and OGG are both tested to work.
+
+To run: 
+
+`go run audio.go [path to audio file]`
+
+![](images/audio.png)
