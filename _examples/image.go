@@ -50,6 +50,6 @@ func main() {
 
 	g := tl.NewGame()
 	c := tl.BackgroundCanvasFromFile(os.Args[1])
-	g.AddEntity(NewImage(c))
+	g.Screen().AddEntity(NewImage(c))
 	g.Start()
 }

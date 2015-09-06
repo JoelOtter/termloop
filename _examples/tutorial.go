@@ -61,6 +61,6 @@ func main() {
 	// Set the character at position (0, 0) on the entity.
 	player.entity.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '옷'})
 	level.AddEntity(&player)
-	game.SetLevel(level)
+	game.Screen().SetLevel(level)
 	game.Start()
 }

@@ -80,6 +80,21 @@ func (s *Screen) Size() (int, int) {
 	return s.width, s.height
 }
 
+// SetLevel sets the Screen's current level to be l.
+func (s *Screen) SetLevel(l Level) {
+	s.level = l
+}
+
+// Level returns the Screen's current level.
+func (s *Screen) Level() Level {
+	return s.level
+}
+
+// AddEntity adds a Drawable to the current Screen, to be rendered.
+func (s *Screen) AddEntity(d Drawable) {
+	s.entities = append(s.entities, d)
+}
+
 // TimeDelta returns the number of seconds since the previous
 // frame was rendered. Can be used for timings and animation.
 func (s *Screen) TimeDelta() float64 {

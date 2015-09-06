@@ -16,6 +16,6 @@ func main() {
 	dat, err := ioutil.ReadFile("lorry.txt")
 	check(err)
 	e := tl.NewEntityFromCanvas(1, 1, tl.CanvasFromString(string(dat)))
-	g.AddEntity(e)
+	g.Screen().AddEntity(e)
 	g.Start()
 }

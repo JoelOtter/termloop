@@ -56,7 +56,7 @@ func main() {
 		r:    tl.NewRectangle(7, 4, 3, 3, tl.ColorGreen),
 		move: false,
 	})
-	g.SetLevel(l)
-	g.AddEntity(tl.NewFpsText(0, 0, tl.ColorRed, tl.ColorDefault, 0.5))
+	g.Screen().SetLevel(l)
+	g.Screen().AddEntity(tl.NewFpsText(0, 0, tl.ColorRed, tl.ColorDefault, 0.5))
 	g.Start()
 }

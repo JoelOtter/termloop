@@ -42,7 +42,7 @@ func main() {
 		return
 	}
 	g := tl.NewGame()
-	g.AddEntity(&MovingText{
+	g.Screen().AddEntity(&MovingText{
 		text: tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue),
 	})
 	g.Start()

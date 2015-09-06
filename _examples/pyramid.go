@@ -128,7 +128,7 @@ func (b *Block) Size() (int, int)     { return b.r.Size() }
 func (b *Block) Position() (int, int) { return b.r.Position() }
 
 func (b *Block) Draw(s *tl.Screen) {
-	if l, ok := b.g.Level().(*tl.BaseLevel); ok {
+	if l, ok := b.g.Screen().Level().(*tl.BaseLevel); ok {
 		// Set the level offset so the player is always in the
 		// center of the screen. This simulates moving the camera.
 		sw, sh := s.Size()
@@ -177,12 +177,12 @@ func (b *Block) Collide(c tl.Physical) {
 func buildLevel(g *tl.Game, w, h, score int) {
 	maze := generateMaze(w, h)
 	l := tl.NewBaseLevel(tl.Cell{})
-	g.SetLevel(l)
+	g.Screen().SetLevel(l)
 	g.Log("Building level with width %d and height %d", w, h)
 	scoretext := tl.NewText(0, 1, "Levels explored: "+strconv.Itoa(score),
 		tl.ColorBlue, tl.ColorBlack)
-	g.AddEntity(tl.NewText(0, 0, "Pyramid!", tl.ColorBlue, tl.ColorBlack))
-	g.AddEntity(scoretext)
+	g.Screen().AddEntity(tl.NewText(0, 0, "Pyramid!", tl.ColorBlue, tl.ColorBlack))
+	g.Screen().AddEntity(scoretext)
 	for i, row := range maze {
 		for j, path := range row {
 			if path == '*' {

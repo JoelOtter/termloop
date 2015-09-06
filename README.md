@@ -6,7 +6,7 @@
 
 Termloop is a pure Go game engine for the terminal, built on top of the excellent [Termbox](https://github.com/nsf/termbox-go). It provides a simple render loop for building games in the terminal, and is focused on making terminal game development as easy and as fun as possible.
 
-Termloop is still under active development so changes may be breaking. Pull requests and issues are *very* welcome, and do feel free to ask any questions you might have on the Gitter. I hope you enjoy using Termloop; I've had a blast making it.
+Termloop is still under active development so changes may be breaking. I add any breaking changes to the [Changelog](https://github.com/JoelOtter/termloop/wiki/Changelog) - hopefully at this stage there shouldn't be too manu. Pull requests and issues are *very* welcome, and do feel free to ask any questions you might have on the Gitter. I hope you enjoy using Termloop; I've had a blast making it.
 
 ## Installing
 Install and update with `go get -u github.com/JoelOtter/termloop`
@@ -95,7 +95,7 @@ func main() {
 		Ch: 'v',
 	})
 	level.AddEntity(tl.NewRectangle(10, 10, 50, 20, tl.ColorBlue))
-	game.SetLevel(level)
+	game.Screen().SetLevel(level)
 	game.Start()
 }
 ```

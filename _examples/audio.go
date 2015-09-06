@@ -66,6 +66,6 @@ func main() {
 	g := tl.NewGame()
 	sound := CreateSoundCtrl(os.Args[1], true)
 	defer sound.audio.Stop()
-	g.AddEntity(sound)
+	g.Screen().AddEntity(sound)
 	g.Start()
 }

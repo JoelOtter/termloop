@@ -25,30 +25,14 @@ func NewGame() *Game {
 	return &g
 }
 
+// Screen returns the current Screen of a Game.
+func (g *Game) Screen() *Screen {
+	return g.screen
+}
+
 // SetScreen sets the current Screen of a Game.
 func (g *Game) SetScreen(s *Screen) {
 	g.screen = s
-}
-
-// CreateLevel creates a new BaseLevel with background color bg,
-// and sets it as the Game's level.
-func (g *Game) CreateLevel(bg Attr) {
-	g.screen.level = NewBaseLevel(Cell{Bg: bg})
-}
-
-// SetLevel sets the game's current level to be l.
-func (g *Game) SetLevel(l Level) {
-	g.screen.level = l
-}
-
-// Level returns the game's current level.
-func (g *Game) Level() Level {
-	return g.screen.level
-}
-
-// AddEntity adds a Drawable to the Game's current Screen, to be rendered.
-func (g *Game) AddEntity(d Drawable) {
-	g.screen.entities = append(g.screen.entities, d)
 }
 
 // DebugOn returns a bool showing whether or not debug mode is on.
