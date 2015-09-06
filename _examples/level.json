@@ -1,0 +1,61 @@
+[
+    {
+        "type": "Rectangle",
+        "data": {
+            "x": 5,
+            "y": 8,
+            "width": 20,
+            "height": 7,
+            "color": 67
+        }
+    },
+    {
+        "type": "Rectangle",
+        "data": {
+            "x": 7,
+            "y": 9,
+            "width": 25,
+            "height": 9,
+            "color": 35
+        }
+    },
+    {
+        "type": "Text",
+        "data": {
+            "x": 7,
+            "y": 4,
+            "text": "Hello! The thing to the right is a chess board.",
+            "fg": 70,
+            "bg": 53
+        }
+    },
+    {
+        "type": "Entity",
+        "data": {
+            "x": 35,
+            "y": 12,
+            "text": "lorry.txt",
+            "fg": "",
+            "bg": ""
+        }
+    },
+    {
+        "type": "Entity",
+        "data": {
+            "x": 60,
+            "y": 3,
+            "text": "chessboard.txt",
+            "fg": "images/chesspieces.png",
+            "bg": "images/chessboard.png"
+        }
+    },
+    {
+        "type": "Player",
+        "data": {
+            "x": 0,
+            "y": 0,
+            "ch": "@",
+            "color": 91
+        }
+    }
+]

@@ -23,6 +23,7 @@ Install and update with `go get -u github.com/JoelOtter/termloop`
  - Text
 - Loading entities from ASCII art
 - Loading colour maps from images
+- Loading level maps from JSON
 - Pure Go - easy portability of compiled games, and cross-compilation built right in.
 
 *To see what's on the roadmap, have a look at the [issue tracker](https://github.com/JoelOtter/termloop/issues).*

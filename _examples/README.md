@@ -48,6 +48,87 @@ To run:
 
 ![](images/entityfromfile.png)
 
+# levelmap.go
+
+This example demonstrates how to use Termloop's level map parser. This can read an entire level's data from a JSON string, and render it appropriately into the level. For example, the following JSON:
+
+```json
+[
+    {
+        "type": "Rectangle",
+        "data": {
+            "x": 5,
+            "y": 8,
+            "width": 20,
+            "height": 7,
+            "color": 67
+        }
+    },
+    {
+        "type": "Rectangle",
+        "data": {
+            "x": 7,
+            "y": 9,
+            "width": 25,
+            "height": 9,
+            "color": 35
+        }
+    },
+    {
+        "type": "Text",
+        "data": {
+            "x": 7,
+            "y": 4,
+            "text": "Hello! The thing to the right is a chess board.",
+            "fg": 70,
+            "bg": 53
+        }
+    },
+    {
+        "type": "Entity",
+        "data": {
+            "x": 35,
+            "y": 12,
+            "text": "lorry.txt",
+            "fg": "",
+            "bg": ""
+        }
+    },
+    {
+        "type": "Entity",
+        "data": {
+            "x": 60,
+            "y": 3,
+            "text": "chessboard.txt",
+            "fg": "images/chesspieces.png",
+            "bg": "images/chessboard.png"
+        }
+    },
+    {
+        "type": "Player",
+        "data": {
+            "x": 0,
+            "y": 0,
+            "ch": "@",
+            "color": 91
+        }
+    }
+]
+
+```
+
+Will render like so:
+
+![](images/levelmap.png)
+
+Additionally, a user may define a map of custom parsing functions, which dictate how to read a custom object, just as the Player object in the above example, from JSON and into a real entity.
+
+To run this example, simply do:
+
+`go run levelmap.go`
+
+Please see the example's source code, and the map.go source code, for a more detailed explanation.
+
 # Termloop extras examples
 
 These examples use the termloop/extra package, which means that they have some external dependencies and may not run without some additional libraries being installed.

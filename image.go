@@ -32,7 +32,10 @@ func colorGridFromFile(filename string) *[][]Attr {
 	}
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			r, g, b, _ := m.At(x, y).RGBA()
+			r, g, b, a := m.At(x, y).RGBA()
+			if a < 1 {
+				continue
+			}
 			R := int(r >> 8)
 			G := int(g >> 8)
 			B := int(b >> 8)

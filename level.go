@@ -1,15 +1,17 @@
 package termloop
 
 // Level interface represents a Drawable with a separate background
-// that is drawn first.
+// that is drawn first. It can also contain Drawables of its own.
 type Level interface {
 	DrawBackground(*Screen)
+	AddEntity(Drawable)
+	RemoveEntity(Drawable)
 	Draw(*Screen)
 	Tick(Event)
 }
 
 // BaseLevel type represents a Level with a background defined as a Cell,
-// and a slice of Drawables, entities, that are drawn after the background.
+// which is tiled. The background is drawn first, then all entities.
 type BaseLevel struct {
 	entities []Drawable
 	bg       Cell
