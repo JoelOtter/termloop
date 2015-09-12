@@ -13,6 +13,7 @@ Install and update with `go get -u github.com/JoelOtter/termloop`
 
 ## Features
 
+- Keyboard and mouse input
 - Collision detection
 - Render timers
 - Level offsets to simulate 'camera' movement

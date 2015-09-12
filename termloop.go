@@ -94,20 +94,24 @@ type Cell struct {
 // Resizing and errors are largely handled by Termloop itself
 // - this would largely be used for input.
 type Event struct {
-	Type EventType // The type of event
-	Key  Key       // The key pressed, if any
-	Ch   rune      // The character of the key, if any
-	Mod  Modifier  // A keyboard modifier, if any
-	Err  error     // Error, if any
+	Type   EventType // The type of event
+	Key    Key       // The key pressed, if any
+	Ch     rune      // The character of the key, if any
+	Mod    Modifier  // A keyboard modifier, if any
+	Err    error     // Error, if any
+	MouseX int       // Mouse X coordinate, if any
+	MouseY int       // Mouse Y coordinate, if any
 }
 
 func convertEvent(ev termbox.Event) Event {
 	return Event{
-		Type: EventType(ev.Type),
-		Key:  Key(ev.Key),
-		Ch:   ev.Ch,
-		Mod:  Modifier(ev.Mod),
-		Err:  ev.Err,
+		Type:   EventType(ev.Type),
+		Key:    Key(ev.Key),
+		Ch:     ev.Ch,
+		Mod:    Modifier(ev.Mod),
+		Err:    ev.Err,
+		MouseX: ev.MouseX,
+		MouseY: ev.MouseY,
 	}
 }
 

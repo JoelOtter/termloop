@@ -19,6 +19,16 @@ This example demonstrates how to use Termloop's built in collision checking, as 
 ![](images/collision1.png)
 ![](images/collision2.png)
 
+## click.go
+
+This very simple example shows how to use Termloop's mouse click detection. It's simply a grid of rectangles which change colour when you click on them - you can use it as a very primitive sort of MS Paint! You can see in the screenshot my inner child artist has come out.
+
+To run:
+
+`go run click.go`
+
+![](images/click.png)
+
 ## Pyramid!
 
 You've started at the top of a pyramid - how many levels down can you get before you're helplessly lost?
@@ -48,7 +58,7 @@ To run:
 
 ![](images/entityfromfile.png)
 
-# levelmap.go
+## levelmap.go
 
 This example demonstrates how to use Termloop's level map parser. This can read an entire level's data from a JSON string, and render it appropriately into the level. For example, the following JSON:
 

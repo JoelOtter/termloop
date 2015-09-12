@@ -71,6 +71,7 @@ func (g *Game) Start() {
 	// Init Termbox
 	err := termbox.Init()
 	termbox.SetOutputMode(termbox.Output256)
+	termbox.SetInputMode(termbox.InputEsc | termbox.InputMouse)
 	if err != nil {
 		panic(err)
 	}
