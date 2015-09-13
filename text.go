@@ -81,4 +81,8 @@ func (t *Text) Color() (Attr, Attr) {
 func (t *Text) SetColor(fg, bg Attr) {
 	t.fg = fg
 	t.bg = bg
+	for i := range t.canvas {
+		t.canvas[i].Fg = fg
+		t.canvas[i].Bg = bg
+	}
 }
