@@ -13,7 +13,7 @@ type Entity struct {
 // (width, height).
 // Returns a pointer to the new Entity.
 func NewEntity(x, y, width, height int) *Entity {
-	canvas := newCanvas(width, height)
+	canvas := NewCanvas(width, height)
 	e := Entity{x: x, y: y, width: width, height: height,
 		canvas: canvas}
 	return &e

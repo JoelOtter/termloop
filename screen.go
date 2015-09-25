@@ -20,7 +20,7 @@ type Screen struct {
 // Returns a pointer to the new Screen.
 func NewScreen() *Screen {
 	s := Screen{entities: make([]Drawable, 0)}
-	s.canvas = newCanvas(10, 10)
+	s.canvas = NewCanvas(10, 10)
 	return &s
 }
 
@@ -42,7 +42,7 @@ func (s *Screen) Tick(ev Event) {
 // state of the screen.
 func (s *Screen) Draw() {
 	// Update termloop canvas
-	s.canvas = newCanvas(s.width, s.height)
+	s.canvas = NewCanvas(s.width, s.height)
 	if s.level != nil {
 		s.level.DrawBackground(s)
 		s.level.Draw(s)
@@ -64,7 +64,7 @@ func (s *Screen) Draw() {
 func (s *Screen) resize(w, h int) {
 	s.width = w
 	s.height = h
-	c := newCanvas(w, h)
+	c := NewCanvas(w, h)
 	// Copy old data that fits
 	for i := 0; i < min(w, len(s.canvas)); i++ {
 		for j := 0; j < min(h, len(s.canvas[0])); j++ {

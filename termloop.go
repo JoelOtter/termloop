@@ -12,7 +12,7 @@ type Canvas [][]Cell
 
 // NewCanvas returns a new Canvas, with
 // width and height defined by arguments.
-func newCanvas(width, height int) Canvas {
+func NewCanvas(width, height int) Canvas {
 	canvas := make(Canvas, width)
 	for i := range canvas {
 		canvas[i] = make([]Cell, height)
