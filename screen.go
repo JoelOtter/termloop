@@ -95,6 +95,16 @@ func (s *Screen) AddEntity(d Drawable) {
 	s.entities = append(s.entities, d)
 }
 
+// RemoveEntity removes Drawable d from the screen's entities.
+func (s *Screen) RemoveEntity(d Drawable) {
+	for i, elem := range s.entities {
+		if elem == d {
+			s.entities = append(s.entities[:i], s.entities[i+1:]...)
+			return
+		}
+	}
+}
+
 // TimeDelta returns the number of seconds since the previous
 // frame was rendered. Can be used for timings and animation.
 func (s *Screen) TimeDelta() float64 {
