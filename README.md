@@ -42,6 +42,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [Included examples](https://github.com/JoelOtter/termloop/tree/master/_examples) (@JoelOtter)
 - [Number Crusher](https://github.com/aquilax/number_crusher) (@aquilax)
 - [Go Tapper](https://github.com/swapagarwal/gotapper) (@swapagarwal)
+- [Frame Assault](https://github.com/Ariemeth/frame_assault) (@Ariemeth)
 
 _Feel free to add yours with a pull request!_
 
