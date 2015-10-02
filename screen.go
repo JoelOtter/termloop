@@ -6,14 +6,15 @@ import "github.com/nsf/termbox-go"
 // To draw on the screen, create Drawables and set their positions.
 // Then, add them to the Screen's Level, or to the Screen directly (e.g. a HUD).
 type Screen struct {
-	canvas   Canvas
-	level    Level
-	entities []Drawable
-	width    int
-	height   int
-	delta    float64
-	offsetx  int
-	offsety  int
+	oldCanvas Canvas
+	canvas    Canvas
+	level     Level
+	entities  []Drawable
+	width     int
+	height    int
+	delta     float64
+	offsetx   int
+	offsety   int
 }
 
 // NewScreen creates a new Screen, with no entities or level.
@@ -50,15 +51,19 @@ func (s *Screen) Draw() {
 	for _, e := range s.entities {
 		e.Draw(s)
 	}
-	// Draw to terminal
-	for i, col := range s.canvas {
-		for j, cell := range col {
-			termbox.SetCell(i, j, cell.Ch,
-				termbox.Attribute(cell.Fg),
-				termbox.Attribute(cell.Bg))
+	// Check if anything changed between Draws
+	if !s.canvas.equals(&s.oldCanvas) {
+		// Draw to terminal
+		for i, col := range s.canvas {
+			for j, cell := range col {
+				termbox.SetCell(i, j, cell.Ch,
+					termbox.Attribute(cell.Fg),
+					termbox.Attribute(cell.Bg))
+			}
 		}
+		termbox.Flush()
 	}
-	termbox.Flush()
+	s.oldCanvas = s.canvas
 }
 
 func (s *Screen) resize(w, h int) {

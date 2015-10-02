@@ -20,6 +20,29 @@ func NewCanvas(width, height int) Canvas {
 	return canvas
 }
 
+func (canvas *Canvas) equals(oldCanvas *Canvas) bool {
+	c := *canvas
+	c2 := *oldCanvas
+	if c2 == nil {
+		return false
+	}
+	if len(c) != len(c2) {
+		return false
+	}
+	if len(c[0]) != len(c2[0]) {
+		return false
+	}
+	for i := range c {
+		for j := range c[i] {
+			equal := c[i][j].equals(&(c2[i][j]))
+			if !equal {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 // CanvasFromString returns a new Canvas, built from
 // the characters in the string str. Newline characters in
 // the string are interpreted as a new Canvas row.
@@ -88,6 +111,12 @@ type Cell struct {
 	Fg Attr // Foreground colour
 	Bg Attr // Background color
 	Ch rune // The character to draw
+}
+
+func (c *Cell) equals(c2 *Cell) bool {
+	return c.Fg == c2.Fg &&
+		c.Bg == c2.Bg &&
+		c.Ch == c2.Ch
 }
 
 // Provides an event, for input, errors or resizing.
