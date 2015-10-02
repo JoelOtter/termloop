@@ -9,7 +9,7 @@ type Screen struct {
 	oldCanvas Canvas
 	canvas    Canvas
 	level     Level
-	entities  []Drawable
+	Entities  []Drawable
 	width     int
 	height    int
 	delta     float64
@@ -20,7 +20,7 @@ type Screen struct {
 // NewScreen creates a new Screen, with no entities or level.
 // Returns a pointer to the new Screen.
 func NewScreen() *Screen {
-	s := Screen{entities: make([]Drawable, 0)}
+	s := Screen{Entities: make([]Drawable, 0)}
 	s.canvas = NewCanvas(10, 10)
 	return &s
 }
@@ -33,7 +33,7 @@ func (s *Screen) Tick(ev Event) {
 		s.level.Tick(ev)
 	}
 	if ev.Type != EventNone {
-		for _, e := range s.entities {
+		for _, e := range s.Entities {
 			e.Tick(ev)
 		}
 	}
@@ -48,7 +48,7 @@ func (s *Screen) Draw() {
 		s.level.DrawBackground(s)
 		s.level.Draw(s)
 	}
-	for _, e := range s.entities {
+	for _, e := range s.Entities {
 		e.Draw(s)
 	}
 	// Check if anything changed between Draws
@@ -97,14 +97,14 @@ func (s *Screen) Level() Level {
 
 // AddEntity adds a Drawable to the current Screen, to be rendered.
 func (s *Screen) AddEntity(d Drawable) {
-	s.entities = append(s.entities, d)
+	s.Entities = append(s.Entities, d)
 }
 
 // RemoveEntity removes Drawable d from the screen's entities.
 func (s *Screen) RemoveEntity(d Drawable) {
-	for i, elem := range s.entities {
+	for i, elem := range s.Entities {
 		if elem == d {
-			s.entities = append(s.entities[:i], s.entities[i+1:]...)
+			s.Entities = append(s.Entities[:i], s.Entities[i+1:]...)
 			return
 		}
 	}

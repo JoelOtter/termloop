@@ -11,9 +11,9 @@ type Level interface {
 }
 
 // BaseLevel type represents a Level with a background defined as a Cell,
-// which is tiled. The background is drawn first, then all entities.
+// which is tiled. The background is drawn first, then all Entities.
 type BaseLevel struct {
-	entities []Drawable
+	Entities []Drawable
 	bg       Cell
 	offsetx  int
 	offsety  int
@@ -22,7 +22,7 @@ type BaseLevel struct {
 // NewBaseLevel creates a new BaseLevel with background bg.
 // Returns a pointer to the new BaseLevel.
 func NewBaseLevel(bg Cell) *BaseLevel {
-	level := BaseLevel{entities: make([]Drawable, 0), bg: bg}
+	level := BaseLevel{Entities: make([]Drawable, 0), bg: bg}
 	return &level
 }
 
@@ -31,7 +31,7 @@ func NewBaseLevel(bg Cell) *BaseLevel {
 func (l *BaseLevel) Tick(ev Event) {
 	// Handle input
 	if ev.Type != EventNone {
-		for _, e := range l.entities {
+		for _, e := range l.Entities {
 			e.Tick(ev)
 		}
 	}
@@ -39,7 +39,7 @@ func (l *BaseLevel) Tick(ev Event) {
 	// Handle collisions
 	colls := make([]Physical, 0)
 	dynamics := make([]DynamicPhysical, 0)
-	for _, e := range l.entities {
+	for _, e := range l.Entities {
 		if p, ok := interface{}(e).(Physical); ok {
 			colls = append(colls, p)
 		}
@@ -75,7 +75,7 @@ func (l *BaseLevel) DrawBackground(s *Screen) {
 func (l *BaseLevel) Draw(s *Screen) {
 	offx, offy := s.offset()
 	s.setOffset(l.offsetx, l.offsety)
-	for _, e := range l.entities {
+	for _, e := range l.Entities {
 		e.Draw(s)
 	}
 	s.setOffset(offx, offy)
@@ -83,14 +83,14 @@ func (l *BaseLevel) Draw(s *Screen) {
 
 // AddEntity adds Drawable d to the level's entities.
 func (l *BaseLevel) AddEntity(d Drawable) {
-	l.entities = append(l.entities, d)
+	l.Entities = append(l.Entities, d)
 }
 
 // RemoveEntity removes Drawable d from the level's entities.
 func (l *BaseLevel) RemoveEntity(d Drawable) {
-	for i, elem := range l.entities {
+	for i, elem := range l.Entities {
 		if elem == d {
-			l.entities = append(l.entities[:i], l.entities[i+1:]...)
+			l.Entities = append(l.Entities[:i], l.Entities[i+1:]...)
 			return
 		}
 	}
