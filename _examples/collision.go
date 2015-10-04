@@ -1,6 +1,6 @@
 package main
 
-import tl "github.com/JoelOtter/termloop"
+import tl "github.com/jodizzle/termloop"
 
 type CollRec struct {
 	r    *tl.Rectangle

@@ -103,5 +103,6 @@ mainloop:
 		g.screen.delta = update.Sub(clock).Seconds()
 		clock = update
 		g.screen.Draw()
+		time.Sleep(time.Duration(g.screen.delta + 1000.0/60.0)*time.Millisecond)
 	}
 }
