@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/nsf/termbox-go"
 	"time"
+	//"strconv"
 )
 
 // Represents a top-level Termloop application.
@@ -86,6 +87,10 @@ func (g *Game) Start() {
 
 mainloop:
 	for {
+		update := time.Now()
+		g.screen.delta = update.Sub(clock).Seconds()
+		clock = update
+
 		select {
 		case ev := <-g.input.eventQ:
 			if ev.Key == g.input.endKey {
@@ -99,10 +104,9 @@ mainloop:
 		default:
 			g.screen.Tick(Event{Type: EventNone})
 		}
-		update := time.Now()
-		g.screen.delta = update.Sub(clock).Seconds()
-		clock = update
+
 		g.screen.Draw()
-		time.Sleep(time.Duration(g.screen.delta + 1000.0/g.screen.fps)*time.Millisecond)
+		//g.Log(strconv.FormatFloat(update.Sub(time.Now()).Seconds()*1000.0, 'f', 2, 32))
+		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0) + 1000.0/g.screen.fps)*time.Millisecond)
 	}
 }
