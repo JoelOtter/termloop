@@ -1,6 +1,6 @@
 package main
 
-import tl "github.com/jodizzle/termloop"
+import tl "github.com/JoelOtter/termloop"
 
 type CollRec struct {
 	r    *tl.Rectangle
@@ -45,7 +45,7 @@ func (r *CollRec) Collide(p tl.Physical) {
 
 func main() {
 	g := tl.NewGame()
-	g.Screen().SetFps(120)
+	g.Screen().SetFps(60)
 	l := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorWhite,
 	})
