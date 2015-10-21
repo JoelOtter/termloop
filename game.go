@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/nsf/termbox-go"
 	"time"
-	//"strconv"
 )
 
 // Represents a top-level Termloop application.
@@ -106,7 +105,6 @@ mainloop:
 		}
 
 		g.screen.Draw()
-		//g.Log(strconv.FormatFloat(update.Sub(time.Now()).Seconds()*1000.0, 'f', 2, 32))
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0) + 1000.0/g.screen.fps)*time.Millisecond)
 	}
 }
