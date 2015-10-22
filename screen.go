@@ -13,7 +13,7 @@ type Screen struct {
 	width     int
 	height    int
 	delta     float64
-	fps		  float64
+	fps       float64
 	offsetx   int
 	offsety   int
 }
