@@ -105,6 +105,8 @@ mainloop:
 		}
 
 		g.screen.Draw()
+		// If g.screen.fps is zero (the default), then 1000.0/g.screen.fps -> +Inf -> time.Duration(+Inf), which
+		// is a negative number, and so time.Sleep returns immediately.
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/g.screen.fps) * time.Millisecond)
 	}
 }
