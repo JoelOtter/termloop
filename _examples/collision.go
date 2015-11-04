@@ -45,6 +45,7 @@ func (r *CollRec) Collide(p tl.Physical) {
 
 func main() {
 	g := tl.NewGame()
+	g.Screen().SetFps(60)
 	l := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorWhite,
 	})

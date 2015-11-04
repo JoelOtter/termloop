@@ -13,6 +13,7 @@ type Screen struct {
 	width     int
 	height    int
 	delta     float64
+	fps       float64
 	offsetx   int
 	offsety   int
 }
@@ -114,6 +115,13 @@ func (s *Screen) RemoveEntity(d Drawable) {
 // frame was rendered. Can be used for timings and animation.
 func (s *Screen) TimeDelta() float64 {
 	return s.delta
+}
+
+// Set the screen framerate.  By default, termloop will draw the
+// the screen as fast as possible, which may use a lot of system
+// resources.
+func (s *Screen) SetFps(f float64) {
+	s.fps = f
 }
 
 // RenderCell updates the Cell at a given position on the Screen
