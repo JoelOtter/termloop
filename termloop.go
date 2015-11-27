@@ -248,7 +248,7 @@ const (
 	KeyCtrlX          Key = 0x18
 	KeyCtrlY          Key = 0x19
 	KeyCtrlZ          Key = 0x1A
-	KeyEsc            Key = 0x1B
+	KeyEsc            Key = 0x1B // No longer supported
 	KeyCtrlLsqBracket Key = 0x1B
 	KeyCtrl3          Key = 0x1B
 	KeyCtrl4          Key = 0x1C

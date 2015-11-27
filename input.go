@@ -11,7 +11,7 @@ type input struct {
 func newInput() *input {
 	i := input{eventQ: make(chan termbox.Event),
 		ctrl:   make(chan bool, 2),
-		endKey: termbox.KeyEsc}
+		endKey: termbox.KeyCtrlC}
 	return &i
 }
 

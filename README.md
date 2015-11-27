@@ -63,7 +63,7 @@ func main() {
 }
 ```
 
-We can press the Escape key to exit. It's just a blank screen - let's make it a little more interesting.
+We can press Ctrl+C to exit. It's just a blank screen - let's make it a little more interesting.
 
 Let's make a green background, because grass is really nice to run around on. We create a new level like so:
 

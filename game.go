@@ -65,13 +65,21 @@ func (g *Game) dumpLogs() {
 	}
 }
 
+// SetEndKey sets the Key used to end the game. Default is KeyCtrlC.
+// If you don't want an end key, set it to KeyEsc, as this key
+// isn't supported and will do nothing.
+// (We recommend always having an end key for development/testing.)
+func (g *Game) SetEndKey(key Key) {
+	g.input.endKey = termbox.Key(key)
+}
+
 // Start starts a Game running. This should be the last thing called in your
 // main function. By default, the escape key exits.
 func (g *Game) Start() {
 	// Init Termbox
 	err := termbox.Init()
 	termbox.SetOutputMode(termbox.Output256)
-	termbox.SetInputMode(termbox.InputEsc | termbox.InputMouse)
+	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
 	if err != nil {
 		panic(err)
 	}
