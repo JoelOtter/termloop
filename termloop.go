@@ -1,7 +1,7 @@
 package termloop
 
 import (
-	"github.com/nsf/termbox-go"
+	"github.com/JoelOtter/termbox-go"
 	"strings"
 )
 

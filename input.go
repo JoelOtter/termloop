@@ -1,6 +1,6 @@
 package termloop
 
-import "github.com/nsf/termbox-go"
+import "github.com/JoelOtter/termbox-go"
 
 type input struct {
 	endKey termbox.Key

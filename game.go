@@ -2,7 +2,7 @@ package termloop
 
 import (
 	"fmt"
-	"github.com/nsf/termbox-go"
+	"github.com/JoelOtter/termbox-go"
 	"time"
 )
 
