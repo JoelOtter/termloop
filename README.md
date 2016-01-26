@@ -130,16 +130,12 @@ func (player *Player) Tick(event tl.Event) {
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
 			player.entity.SetPosition(x+1, y)
-			break
 		case tl.KeyArrowLeft:
 			player.entity.SetPosition(x-1, y)
-			break
 		case tl.KeyArrowUp:
 			player.entity.SetPosition(x, y-1)
-			break
 		case tl.KeyArrowDown:
 			player.entity.SetPosition(x, y+1)
-			break
 		}
 	}
 }
@@ -200,16 +196,12 @@ func (player *Player) Tick(event tl.Event) {
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
 			player.entity.SetPosition(player.prevX+1, player.prevY)
-			break
 		case tl.KeyArrowLeft:
 			player.entity.SetPosition(player.prevX-1, player.prevY)
-			break
 		case tl.KeyArrowUp:
 			player.entity.SetPosition(player.prevX, player.prevY-1)
-			break
 		case tl.KeyArrowDown:
 			player.entity.SetPosition(player.prevX, player.prevY+1)
-			break
 		}
 	}
 }

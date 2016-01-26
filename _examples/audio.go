@@ -48,16 +48,12 @@ func (sc *SoundCtrl) Tick(ev tl.Event) {
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			sc.track.Play()
-			break
 		case tl.KeyArrowLeft:
 			sc.track.Restart()
-			break
 		case tl.KeyArrowUp:
 			sc.track.Pause()
-			break
 		case tl.KeyArrowDown:
 			sc.track.Stop()
-			break
 		}
 	}
 }

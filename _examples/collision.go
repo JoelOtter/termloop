@@ -21,16 +21,12 @@ func (r *CollRec) Tick(ev tl.Event) {
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			r.r.SetPosition(r.px+1, r.py)
-			break
 		case tl.KeyArrowLeft:
 			r.r.SetPosition(r.px-1, r.py)
-			break
 		case tl.KeyArrowUp:
 			r.r.SetPosition(r.px, r.py-1)
-			break
 		case tl.KeyArrowDown:
 			r.r.SetPosition(r.px, r.py+1)
-			break
 		}
 	}
 }
