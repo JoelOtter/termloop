@@ -145,16 +145,12 @@ func (b *Block) Tick(ev tl.Event) {
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			b.r.SetPosition(b.px+1, b.py)
-			break
 		case tl.KeyArrowLeft:
 			b.r.SetPosition(b.px-1, b.py)
-			break
 		case tl.KeyArrowUp:
 			b.r.SetPosition(b.px, b.py-1)
-			break
 		case tl.KeyArrowDown:
 			b.r.SetPosition(b.px, b.py+1)
-			break
 		}
 	}
 }

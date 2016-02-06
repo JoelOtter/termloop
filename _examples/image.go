@@ -27,16 +27,12 @@ func (i *Image) Tick(ev tl.Event) {
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			x -= 1
-			break
 		case tl.KeyArrowLeft:
 			x += 1
-			break
 		case tl.KeyArrowUp:
 			y += 1
-			break
 		case tl.KeyArrowDown:
 			y -= 1
-			break
 		}
 		i.e.SetPosition(x, y)
 	}

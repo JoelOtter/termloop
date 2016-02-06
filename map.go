@@ -83,16 +83,13 @@ func LoadLevelFromMap(jsonMap string, parsers map[string]EntityParser, l Level) 
 		switch lm.Type {
 		case "Rectangle":
 			entity = parseRectangle(lm.Data)
-			break
 		case "Text":
 			entity = parseText(lm.Data)
-			break
 		case "Entity":
 			entity, err = parseEntity(lm.Data)
 			if err != nil {
 				return err
 			}
-			break
 		default:
 			entity = parsers[lm.Type](lm.Data)
 		}

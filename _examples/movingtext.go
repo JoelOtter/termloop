@@ -21,16 +21,12 @@ func (m *MovingText) Tick(ev tl.Event) {
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			x += 1
-			break
 		case tl.KeyArrowLeft:
 			x -= 1
-			break
 		case tl.KeyArrowUp:
 			y -= 1
-			break
 		case tl.KeyArrowDown:
 			y += 1
-			break
 		}
 		m.text.SetPosition(x, y)
 	}
