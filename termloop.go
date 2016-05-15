@@ -213,6 +213,9 @@ const (
 	MouseLeft
 	MouseMiddle
 	MouseRight
+	MouseRelease
+	MouseWheelUp
+	MouseWheelDown
 )
 
 const (
