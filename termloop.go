@@ -1,8 +1,9 @@
 package termloop
 
 import (
-	"github.com/nsf/termbox-go"
 	"strings"
+
+	"github.com/nsf/termbox-go"
 )
 
 // A Canvas is a 2D array of Cells, used for drawing.
@@ -213,6 +214,9 @@ const (
 	MouseLeft
 	MouseMiddle
 	MouseRight
+	MouseRelease
+	MouseWheelUp
+	MouseWheelDown
 )
 
 const (
