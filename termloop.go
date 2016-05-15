@@ -1,9 +1,8 @@
 package termloop
 
 import (
-	"strings"
-
 	"github.com/nsf/termbox-go"
+	"strings"
 )
 
 // A Canvas is a 2D array of Cells, used for drawing.

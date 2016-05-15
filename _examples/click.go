@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	tl "github.com/JoelOtter/termloop"
 )
 
@@ -12,7 +11,7 @@ type EventInfo struct {
 
 func NewEventInfo(x, y int) *EventInfo {
 	info := &EventInfo{}
-	info.text = tl.NewText(x, y, "click somewhere", tl.ColorWhite, tl.ColorBlack)
+	info.text = tl.NewText(x, y, "Click somewhere", tl.ColorWhite, tl.ColorBlack)
 	return info
 }
 
