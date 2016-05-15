@@ -24,7 +24,7 @@ func (info *EventInfo) Tick(ev tl.Event) {
 	if ev.Type != tl.EventMouse {
 		return
 	}
-	name := "Unknown Event"
+	var name string
 	switch ev.Key {
 	case tl.MouseLeft:
 		name = "Mouse Left"
@@ -38,6 +38,8 @@ func (info *EventInfo) Tick(ev tl.Event) {
 		name = "Mouse Wheel Down"
 	case tl.MouseRelease:
 		name = "Mouse Release"
+	default:
+		name = fmt.Sprintf("Unknown Key (%#x)", ev.Key)
 	}
 	info.text.SetText(fmt.Sprintf("%s @ [%d, %d]", name, ev.MouseX, ev.MouseY))
 }
