@@ -16,6 +16,7 @@ type Screen struct {
 	fps       float64
 	offsetx   int
 	offsety   int
+	pixelMode bool
 }
 
 // NewScreen creates a new Screen, with no entities or level.
@@ -55,12 +56,10 @@ func (s *Screen) Draw() {
 	// Check if anything changed between Draws
 	if !s.canvas.equals(&s.oldCanvas) {
 		// Draw to terminal
-		for i, col := range s.canvas {
-			for j, cell := range col {
-				termbox.SetCell(i, j, cell.Ch,
-					termbox.Attribute(cell.Fg),
-					termbox.Attribute(cell.Bg))
-			}
+		if s.pixelMode {
+			termboxPixel(&s.canvas)
+		} else {
+			termboxNormal(&s.canvas)
 		}
 		termbox.Flush()
 	}
@@ -70,10 +69,13 @@ func (s *Screen) Draw() {
 func (s *Screen) resize(w, h int) {
 	s.width = w
 	s.height = h
-	c := NewCanvas(w, h)
+	if s.pixelMode {
+		s.height *= 2
+	}
+	c := NewCanvas(s.width, s.height)
 	// Copy old data that fits
-	for i := 0; i < min(w, len(s.canvas)); i++ {
-		for j := 0; j < min(h, len(s.canvas[0])); j++ {
+	for i := 0; i < min(s.width, len(s.canvas)); i++ {
+		for j := 0; j < min(s.height, len(s.canvas[0])); j++ {
 			c[i][j] = s.canvas[i][j]
 		}
 	}
@@ -135,6 +137,12 @@ func (s *Screen) RenderCell(x, y int, c *Cell) {
 	}
 }
 
+// EnablePixelMode sets the screen to 'pixel mode' - giving double
+// the canvas height while sacrificing character drawing ability.
+func (s *Screen) EnablePixelMode() {
+	s.pixelMode = true
+}
+
 func (s *Screen) offset() (int, int) {
 	return s.offsetx, s.offsety
 }
@@ -153,4 +161,32 @@ func renderCell(old, new_ *Cell) {
 	if new_.Fg != 0 {
 		old.Fg = new_.Fg
 	}
+}
+
+func termboxPixel(canvas *Canvas) {
+	for i, col := range *canvas {
+		for j := 0; j < len(col); j += 2 {
+			cellBack := col[j]
+			cellFront := col[j+1]
+			termj := j / 2
+			char := '\u2584'
+			if cellFront.Bg == 0 {
+				char = 0
+			}
+			termbox.SetCell(i, termj, char,
+				termbox.Attribute(cellFront.Bg),
+				termbox.Attribute(cellBack.Bg))
+		}
+	}
+}
+
+func termboxNormal(canvas *Canvas) {
+	for i, col := range *canvas {
+		for j, cell := range col {
+			termbox.SetCell(i, j, cell.Ch,
+				termbox.Attribute(cell.Fg),
+				termbox.Attribute(cell.Bg))
+		}
+	}
+
 }

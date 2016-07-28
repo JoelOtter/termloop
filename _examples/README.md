@@ -46,6 +46,8 @@ To run:
 
 This example shows Termloop's image loading capabilities. Simply run the example with a path to an image as the first parameter, and you'll see a very simple image viewer. It can load PNG, JPEG or GIF images. Here's an example of what it looks like showing [Tempa T](http://www.youtube.com/watch?v=OZ6G7qwjom4).
 
+This example makes use of Termloop's **pixel mode**. This splits terminal characters into two, giving double the available screen height, while sacrificing the ability to draw text.
+
 ![](images/image.png)
 
 ## entityfromfile.go

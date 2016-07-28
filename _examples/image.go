@@ -1,6 +1,6 @@
 package main
 
-// A very simple image viewer
+// A very simple image viewer, which uses Termloop's pixel mode
 
 import (
 	"fmt"
@@ -45,6 +45,7 @@ func main() {
 	}
 
 	g := tl.NewGame()
+	g.Screen().EnablePixelMode()
 	c := tl.BackgroundCanvasFromFile(os.Args[1])
 	g.Screen().AddEntity(NewImage(c))
 	g.Start()
