@@ -6,17 +6,11 @@ import (
 )
 
 type EventInfo struct {
-	text *tl.Text
+	*tl.Text
 }
 
 func NewEventInfo(x, y int) *EventInfo {
-	info := &EventInfo{}
-	info.text = tl.NewText(x, y, "Click somewhere", tl.ColorWhite, tl.ColorBlack)
-	return info
-}
-
-func (info *EventInfo) Draw(screen *tl.Screen) {
-	info.text.Draw(screen)
+	return &EventInfo{tl.NewText(x, y, "Click somewhere", tl.ColorWhite, tl.ColorBlack)}
 }
 
 func (info *EventInfo) Tick(ev tl.Event) {
@@ -40,30 +34,24 @@ func (info *EventInfo) Tick(ev tl.Event) {
 	default:
 		name = fmt.Sprintf("Unknown Key (%#x)", ev.Key)
 	}
-	info.text.SetText(fmt.Sprintf("%s @ [%d, %d]", name, ev.MouseX, ev.MouseY))
+	info.SetText(fmt.Sprintf("%s @ [%d, %d]", name, ev.MouseX, ev.MouseY))
 }
 
 type Clickable struct {
-	r *tl.Rectangle
+	*tl.Rectangle
 }
 
 func NewClickable(x, y, w, h int, col tl.Attr) *Clickable {
-	return &Clickable{
-		r: tl.NewRectangle(x, y, w, h, col),
-	}
-}
-
-func (c *Clickable) Draw(s *tl.Screen) {
-	c.r.Draw(s)
+	return &Clickable{tl.NewRectangle(x, y, w, h, col)}
 }
 
 func (c *Clickable) Tick(ev tl.Event) {
-	x, y := c.r.Position()
+	x, y := c.Position()
 	if ev.Type == tl.EventMouse && ev.MouseX == x && ev.MouseY == y {
-		if c.r.Color() == tl.ColorWhite {
-			c.r.SetColor(tl.ColorBlack)
+		if c.Color() == tl.ColorWhite {
+			c.SetColor(tl.ColorBlack)
 		} else {
-			c.r.SetColor(tl.ColorWhite)
+			c.SetColor(tl.ColorWhite)
 		}
 	}
 }

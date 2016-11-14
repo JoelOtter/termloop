@@ -3,30 +3,32 @@ package main
 import tl "github.com/JoelOtter/termloop"
 
 type CollRec struct {
-	r    *tl.Rectangle
+	*tl.Rectangle
 	move bool
 	px   int
 	py   int
 }
 
-// Implement necessary methods for Physical interface
-func (r *CollRec) Draw(s *tl.Screen)    { r.r.Draw(s) }
-func (r *CollRec) Size() (int, int)     { return r.r.Size() }
-func (r *CollRec) Position() (int, int) { return r.r.Position() }
+func NewCollRec(x, y, w, h int, color tl.Attr, move bool) *CollRec {
+	return &CollRec{
+		Rectangle: tl.NewRectangle(x, y, w, h, color),
+		move:      move,
+	}
+}
 
 func (r *CollRec) Tick(ev tl.Event) {
 	// Enable arrow key movement
 	if ev.Type == tl.EventKey && r.move {
-		r.px, r.py = r.r.Position()
+		r.px, r.py = r.Position()
 		switch ev.Key {
 		case tl.KeyArrowRight:
-			r.r.SetPosition(r.px+1, r.py)
+			r.SetPosition(r.px+1, r.py)
 		case tl.KeyArrowLeft:
-			r.r.SetPosition(r.px-1, r.py)
+			r.SetPosition(r.px-1, r.py)
 		case tl.KeyArrowUp:
-			r.r.SetPosition(r.px, r.py-1)
+			r.SetPosition(r.px, r.py-1)
 		case tl.KeyArrowDown:
-			r.r.SetPosition(r.px, r.py+1)
+			r.SetPosition(r.px, r.py+1)
 		}
 	}
 }
@@ -34,8 +36,8 @@ func (r *CollRec) Tick(ev tl.Event) {
 func (r *CollRec) Collide(p tl.Physical) {
 	// Check if it's a CollRec we're colliding with
 	if _, ok := p.(*CollRec); ok && r.move {
-		r.r.SetColor(tl.ColorBlue)
-		r.r.SetPosition(r.px, r.py)
+		r.SetColor(tl.ColorBlue)
+		r.SetPosition(r.px, r.py)
 	}
 }
 
@@ -45,14 +47,8 @@ func main() {
 	l := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorWhite,
 	})
-	l.AddEntity(&CollRec{
-		r:    tl.NewRectangle(3, 3, 3, 3, tl.ColorRed),
-		move: true,
-	})
-	l.AddEntity(&CollRec{
-		r:    tl.NewRectangle(7, 4, 3, 3, tl.ColorGreen),
-		move: false,
-	})
+	l.AddEntity(NewCollRec(3, 3, 3, 3, tl.ColorRed, true))
+	l.AddEntity(NewCollRec(7, 4, 3, 3, tl.ColorGreen, false))
 	g.Screen().SetLevel(l)
 	g.Screen().AddEntity(tl.NewFpsText(0, 0, tl.ColorRed, tl.ColorDefault, 0.5))
 	g.Start()

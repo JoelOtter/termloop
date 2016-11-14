@@ -102,7 +102,7 @@ func generateMaze(w, h int) [][]rune {
 /////////////////
 
 type Block struct {
-	r         *tl.Rectangle
+	*tl.Rectangle
 	px        int // Previous x
 	py        int // Previous y
 	move      bool
@@ -114,43 +114,41 @@ type Block struct {
 }
 
 func NewBlock(x, y int, color tl.Attr, g *tl.Game, w, h, score int, scoretext *tl.Text) *Block {
-	return &Block{
-		r:         tl.NewRectangle(x, y, 1, 1, color),
+	b := &Block{
 		g:         g,
 		w:         w,
 		h:         h,
 		score:     score,
 		scoretext: scoretext,
 	}
+	b.Rectangle = tl.NewRectangle(x, y, 1, 1, color)
+	return b
 }
-
-func (b *Block) Size() (int, int)     { return b.r.Size() }
-func (b *Block) Position() (int, int) { return b.r.Position() }
 
 func (b *Block) Draw(s *tl.Screen) {
 	if l, ok := b.g.Screen().Level().(*tl.BaseLevel); ok {
 		// Set the level offset so the player is always in the
 		// center of the screen. This simulates moving the camera.
 		sw, sh := s.Size()
-		x, y := b.r.Position()
+		x, y := b.Position()
 		l.SetOffset(sw/2-x, sh/2-y)
 	}
-	b.r.Draw(s)
+	b.Rectangle.Draw(s)
 }
 
 func (b *Block) Tick(ev tl.Event) {
 	// Enable arrow key movement
 	if ev.Type == tl.EventKey {
-		b.px, b.py = b.r.Position()
+		b.px, b.py = b.Position()
 		switch ev.Key {
 		case tl.KeyArrowRight:
-			b.r.SetPosition(b.px+1, b.py)
+			b.SetPosition(b.px+1, b.py)
 		case tl.KeyArrowLeft:
-			b.r.SetPosition(b.px-1, b.py)
+			b.SetPosition(b.px-1, b.py)
 		case tl.KeyArrowUp:
-			b.r.SetPosition(b.px, b.py-1)
+			b.SetPosition(b.px, b.py-1)
 		case tl.KeyArrowDown:
-			b.r.SetPosition(b.px, b.py+1)
+			b.SetPosition(b.px, b.py+1)
 		}
 	}
 }
@@ -159,7 +157,7 @@ func (b *Block) Collide(c tl.Physical) {
 	if r, ok := c.(*tl.Rectangle); ok {
 		if r.Color() == tl.ColorWhite {
 			// Collision with walls
-			b.r.SetPosition(b.px, b.py)
+			b.SetPosition(b.px, b.py)
 		} else if r.Color() == tl.ColorBlue {
 			// Collision with end - new level!
 			b.w += 1

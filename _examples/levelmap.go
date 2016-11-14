@@ -6,17 +6,13 @@ import (
 )
 
 type Player struct {
-	e *tl.Entity
-}
-
-func (p *Player) Draw(s *tl.Screen) {
-	p.e.Draw(s)
+	*tl.Entity
 }
 
 func (p *Player) Tick(ev tl.Event) {
 	// Enable arrow key movement
 	if ev.Type == tl.EventKey {
-		x, y := p.e.Position()
+		x, y := p.Position()
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			x += 1
@@ -27,7 +23,7 @@ func (p *Player) Tick(ev tl.Event) {
 		case tl.KeyArrowDown:
 			y += 1
 		}
-		p.e.SetPosition(x, y)
+		p.SetPosition(x, y)
 	}
 }
 
@@ -42,7 +38,7 @@ func parsePlayer(data map[string]interface{}) tl.Drawable {
 		Ch: []rune(data["ch"].(string))[0],
 		Fg: tl.Attr(data["color"].(float64)),
 	})
-	return &Player{e: e}
+	return &Player{e}
 }
 
 func checkErr(err error) {

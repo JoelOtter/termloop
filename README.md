@@ -110,33 +110,29 @@ When we run it with `go run tutorial.go`, it looks like this:
 
 ![](_examples/images/tutorial01.png)
 
-Pretty! Ish. OK, let's create a character that can walk around the environment. We're going to use object composition here - we'll create a new struct type, which contains an [Entity](http://godoc.org/github.com/JoelOtter/termloop#Entity).
+Pretty! Ish. OK, let's create a character that can walk around the environment. We're going to use object composition here - we'll create a new struct type, which extends an [Entity](http://godoc.org/github.com/JoelOtter/termloop#Entity).
 
 To have Termloop draw our new type, we need to implement the [Drawable](http://godoc.org/github.com/JoelOtter/termloop#Drawable) interface, which means we need two methods: **Draw()** and **Tick()**. The Draw method defines how our type is drawn to the [Screen](http://godoc.org/github.com/JoelOtter/termloop#Screen) (Termloop's internal drawing surface), and the Tick method defines how we handle input.
 
+We don't need to do anything special for `Draw`, and it's already handled by `Entity`, so we just need a `Tick`:
+
 ```go
 type Player struct {
-	entity *tl.Entity
-}
-
-// Here, Draw simply tells the Entity ent to handle its own drawing.
-// We don't need to do anything.
-func (player *Player) Draw(screen *tl.Screen) {
-	player.entity.Draw(screen)
+	*tl.Entity
 }
 
 func (player *Player) Tick(event tl.Event) {
 	if event.Type == tl.EventKey { // Is it a keyboard event?
-		x, y := player.entity.Position()
+		x, y := player.Position()
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
-			player.entity.SetPosition(x+1, y)
+			player.SetPosition(x+1, y)
 		case tl.KeyArrowLeft:
-			player.entity.SetPosition(x-1, y)
+			player.SetPosition(x-1, y)
 		case tl.KeyArrowUp:
-			player.entity.SetPosition(x, y-1)
+			player.SetPosition(x, y-1)
 		case tl.KeyArrowDown:
-			player.entity.SetPosition(x, y+1)
+			player.SetPosition(x, y+1)
 		}
 	}
 }
@@ -145,11 +141,9 @@ func (player *Player) Tick(event tl.Event) {
 Now that we've built our Player type, let's add one to the level. I'm going to use the character '옷', because I think it looks a bit like a stick man.
 
 ```go
-player := Player{
-	entity: tl.NewEntity(1, 1, 1, 1),
-}
+player := Player{tl.NewEntity(1, 1, 1, 1)}
 // Set the character at position (0, 0) on the entity.
-player.entity.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '옷'})
+player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '옷'})
 level.AddEntity(&player)
 
 ```
@@ -186,39 +180,39 @@ The Rectangle type already implements Physical, so we don't actually need to do 
 
 ```go
 type Player struct {
-	entity *tl.Entity
+	*tl.Entity
 	prevX  int
 	prevY  int
 }
 
 func (player *Player) Tick(event tl.Event) {
 	if event.Type == tl.EventKey { // Is it a keyboard event?
-		player.prevX, player.prevY = player.entity.Position()
+		player.prevX, player.prevY = player.Position()
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
-			player.entity.SetPosition(player.prevX+1, player.prevY)
+			player.SetPosition(player.prevX+1, player.prevY)
 		case tl.KeyArrowLeft:
-			player.entity.SetPosition(player.prevX-1, player.prevY)
+			player.SetPosition(player.prevX-1, player.prevY)
 		case tl.KeyArrowUp:
-			player.entity.SetPosition(player.prevX, player.prevY-1)
+			player.SetPosition(player.prevX, player.prevY-1)
 		case tl.KeyArrowDown:
-			player.entity.SetPosition(player.prevX, player.prevY+1)
+			player.SetPosition(player.prevX, player.prevY+1)
 		}
 	}
 }
 
 func (player *Player) Size() (int, int) {
-	return player.entity.Size()
+	return player.Size()
 }
 
 func (player *Player) Position() (int, int) {
-	return player.entity.Position()
+	return player.Position()
 }
 
 func (player *Player) Collide(collision tl.Physical) {
 	// Check if it's a Rectangle we're colliding with
 	if _, ok := collision.(*tl.Rectangle); ok {
-		player.entity.SetPosition(player.prevX, player.prevY)
+		player.SetPosition(player.prevX, player.prevY)
 	}
 }
 
@@ -232,7 +226,7 @@ There isn't really a 'camera' in Termloop, like you might find in another graphi
 
 ```go
 type Player struct {
-	entity *tl.Entity
+	*tl.Entity
 	prevX  int
 	prevY  int
 	level  *tl.BaseLevel
@@ -240,15 +234,16 @@ type Player struct {
 
 func (player *Player) Draw(screen *tl.Screen) {
 	screenWidth, screenHeight := screen.Size()
-	x, y := player.entity.Position()
+	x, y := player.Position()
 	player.level.SetOffset(screenWidth/2-x, screenHeight/2-y)
-	player.entity.Draw(screen)
+  // We need to make sure and call Draw on the underlying Entity.
+	player.Entity.Draw(screen)
 }
 
 
 // in func main
 player := Player{
-	entity:   tl.NewEntity(1, 1, 1, 1),
+	Entity:   tl.NewEntity(1, 1, 1, 1),
 	level: level,
 }
 ```

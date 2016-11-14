@@ -7,17 +7,13 @@ import (
 )
 
 type MovingText struct {
-	text *tl.Text
-}
-
-func (m *MovingText) Draw(s *tl.Screen) {
-	m.text.Draw(s)
+	*tl.Text
 }
 
 func (m *MovingText) Tick(ev tl.Event) {
 	// Enable arrow key movement
 	if ev.Type == tl.EventKey {
-		x, y := m.text.Position()
+		x, y := m.Position()
 		switch ev.Key {
 		case tl.KeyArrowRight:
 			x += 1
@@ -28,7 +24,7 @@ func (m *MovingText) Tick(ev tl.Event) {
 		case tl.KeyArrowDown:
 			y += 1
 		}
-		m.text.SetPosition(x, y)
+		m.SetPosition(x, y)
 	}
 }
 
@@ -38,8 +34,6 @@ func main() {
 		return
 	}
 	g := tl.NewGame()
-	g.Screen().AddEntity(&MovingText{
-		text: tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue),
-	})
+	g.Screen().AddEntity(&MovingText{tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue)})
 	g.Start()
 }
