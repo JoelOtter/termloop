@@ -27,7 +27,7 @@ type Frame struct {
 func NewFrame(x, y, w, h int, bgcolor tl.Attr, fgcolor tl.Attr, frametype LineType, signmode bool) *Frame {
 	f := Frame{Rectangle: tl.NewRectangle(x, y, w, h, bgcolor),
 		fgcolor: fgcolor,
-		frametype: FrameEmpty,
+		frametype: frametype,
 		BorderDefinitions: BorderTheme[uint(frametype)],
 		signmode: signmode,
 		TextArea: NewTextArea(x, y, w, h,"",bgcolor, fgcolor, AlignCenter),

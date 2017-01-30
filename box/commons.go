@@ -14,13 +14,13 @@ const (
 
 type LineType uint
 const (
-	FrameEmpty LineType = 0
-	FrameSingleBorder = 1 << iota
-	FrameDoubleBorder
+	LineEmpty LineType = 0
+	LineSingleBorder = 1 << iota
+	LineDoubleBorder
 )
 
 var BorderTheme = map[uint]*BorderDefinitions{
-  uint(FrameEmpty): &BorderDefinitions{hc: ' ', vc: ' ', luc: ' ', ruc: ' ', lbc: ' ', rbc: ' '},
-  uint(FrameSingleBorder): &BorderDefinitions{hc: '─', vc: '│', luc: '┌', ruc: '┐', lbc: '└', rbc: '┘'},
-  uint(FrameDoubleBorder): &BorderDefinitions{hc: '═', vc: '║', luc: '╔', ruc: '╗', lbc: '╚', rbc: '╝'},
+  uint(LineEmpty): &BorderDefinitions{hc: ' ', vc: ' ', luc: ' ', ruc: ' ', lbc: ' ', rbc: ' '},
+  uint(LineSingleBorder): &BorderDefinitions{hc: '─', vc: '│', luc: '┌', ruc: '┐', lbc: '└', rbc: '┘'},
+  uint(LineDoubleBorder): &BorderDefinitions{hc: '═', vc: '║', luc: '╔', ruc: '╗', lbc: '╚', rbc: '╝'},
 }
