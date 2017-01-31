@@ -16,17 +16,30 @@ type HLine struct {
 	fgcolor tl.Attr
 	linetype LineType
 	*BorderDefinitions
+	level *tl.BaseLevel
 }
 
 // NewHLine creates a new HLine at position (x, y)
 func NewHLine(x, y, s int, bgcolor, fgcolor tl.Attr, linetype LineType) *HLine {
-	return &HLine{x: x, y: y, size: s, bgcolor: bgcolor, fgcolor: fgcolor, linetype: linetype, BorderDefinitions: BorderTheme[uint(linetype)]}
+	return &HLine{
+		x: x, y: y, size: s,
+		bgcolor: bgcolor, fgcolor: fgcolor, linetype: linetype, BorderDefinitions: BorderTheme[uint(linetype)],
+		level: nil,
+	}
 }
 
 // Draws the Horizontal line
 func (l *HLine) Draw(s *tl.Screen) {
+	posx, posy := l.x, l.y
+	// If attached into level, no move text
+	if l.level != nil {
+		offSetX, offSetY := l.level.Offset()
+		posx += -offSetX
+		posy += -offSetY
+	}
+
 	for i := 0; i < l.size; i++ {
-		s.RenderCell(l.x+i, l.y, &tl.Cell{Bg: l.bgcolor, Fg: l.fgcolor, Ch: l.BorderDefinitions.hc})
+		s.RenderCell(posx+i, posy, &tl.Cell{Bg: l.bgcolor, Fg: l.fgcolor, Ch: l.BorderDefinitions.hc})
 	}
 }
 
@@ -41,6 +54,12 @@ func (l *HLine) Size() int {
 func (l *HLine) Position() (int, int) {
 	return l.x, l.y
 }
+
+// Level Follow
+func (f *HLine) LevelFollow(level *tl.BaseLevel) {
+	f.level = level
+}
+
 
 // SetPosition sets the coordinates of the horizontal line to be x and y.
 func (l *HLine) SetPosition(x, y int) {
@@ -86,17 +105,31 @@ type VLine struct {
 	fgcolor tl.Attr
 	linetype LineType
 	*BorderDefinitions
+	level *tl.BaseLevel
 }
 
 // NewVLine creates a new VLine at position (x, y)
 func NewVLine(x, y, s int, bgcolor, fgcolor tl.Attr, linetype LineType) *VLine {
-	return &VLine{x: x, y: y, size: s, bgcolor: bgcolor, fgcolor: fgcolor, linetype: linetype, BorderDefinitions: BorderTheme[uint(linetype)]}
+	return &VLine{
+		x: x, y: y, size: s,
+		bgcolor: bgcolor, fgcolor: fgcolor, linetype: linetype, BorderDefinitions: BorderTheme[uint(linetype)],
+		level: nil,
+	}
 }
 
 // Draws the Horizontal line
 func (l *VLine) Draw(s *tl.Screen) {
+	posx, posy := l.x, l.y
+	// If attached into level, no move text
+	if l.level != nil {
+		offSetX, offSetY := l.level.Offset()
+		posx += -offSetX
+		posy += -offSetY
+	}
+
+
 	for i := 0; i < l.size; i++ {
-		s.RenderCell(l.x, l.y+i, &tl.Cell{Bg: l.bgcolor, Fg: l.fgcolor, Ch: l.BorderDefinitions.vc})
+		s.RenderCell(posx, posy+i, &tl.Cell{Bg: l.bgcolor, Fg: l.fgcolor, Ch: l.BorderDefinitions.vc})
 	}
 }
 
@@ -111,6 +144,12 @@ func (l *VLine) Size() int {
 func (l *VLine) Position() (int, int) {
 	return l.x, l.y
 }
+
+// Level Follow
+func (f *VLine) LevelFollow(level *tl.BaseLevel) {
+	f.level = level
+}
+
 
 // SetPosition sets the coordinates of the horizontal line to be x and y.
 func (l *VLine) SetPosition(x, y int) {
