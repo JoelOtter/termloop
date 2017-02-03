@@ -1,27 +1,44 @@
 package box
 
-import tl "github.com/badele/termloop"
+import (
+	tl "github.com/badele/termloop"
+	"time"
+)
 
 // A type representing a Text with Area dimension
 type TextArea struct {
 	x,y,w,h     int
 	align Align
-	*tl.Text
+	bgcolor tl.Attr
+	fgcolor tl.Attr
+	text string
 	level *tl.BaseLevel
+	previoustimewriter time.Time
+	typewriterduration int64
 
 }
 
 // NewTextArea creates a new TextArea
 func NewTextArea(x, y, w, h int, text string, bgcolor, fgcolor  tl.Attr, align Align) *TextArea {
-	t := TextArea{x:x, y:y, w:w, h:h, Text: tl.NewText(0, 0, "", fgcolor, bgcolor),level: nil}
-	t.SetText(text,align)
+	t := TextArea{x:x, y:y, w:w, h:h, fgcolor:fgcolor,bgcolor:bgcolor,level: nil,typewriterduration:0, previoustimewriter:time.Now()}
 	return &t
 }
 
 // Draws the TextArea r onto Screen s.
 func (t *TextArea) Draw(s *tl.Screen) {
 	posx, posy := t.x, t.y
-	twidth,_ := t.Text.Size()
+
+	text := tl.NewText(0, 0, t.text, t.fgcolor, t.bgcolor)
+	if t.typewriterduration != 0 {
+		now := time.Now()
+		elapsed := int64(now.Sub(t.previoustimewriter)/time.Millisecond)
+		nbchar := elapsed / t.typewriterduration
+		if int(nbchar) < len(t.text) {
+			text = tl.NewText(0, 0, t.text[0:nbchar], t.fgcolor, t.bgcolor)
+		}
+	}
+
+	twidth,_ := text.Size()
 
 	if t.align&AlignRight == AlignRight{
 		posx = t.x + (t.w - twidth)
@@ -45,8 +62,8 @@ func (t *TextArea) Draw(s *tl.Screen) {
 		posx += -offSetX
 		posy += -offSetY
 	}
-	t.Text.SetPosition(posx,posy)
-	t.Text.Draw(s)
+	text.SetPosition(posx,posy)
+	text.Draw(s)
 }
 
 func (t *TextArea) Tick(ev tl.Event) {}
@@ -61,11 +78,16 @@ func (t *TextArea) Position() (int, int) {
 	return t.x, t.y
 }
 
+// Set typewriter speed
+func (t *TextArea) SetTypewriterDuration(typewriterduration int64) {
+	t.previoustimewriter = time.Now()
+	t.typewriterduration = typewriterduration
+}
+
 // Set Text
 func (t *TextArea) SetText(text string, align Align) {
-
 	t.SetAlign(align)
-	t.Text.SetText(text)
+	t.text = text
 }
 
 
@@ -87,9 +109,9 @@ func (f *TextArea) LevelFollow(level *tl.BaseLevel) {
 
 // Color returns the color of the TextArea.
 func (t *TextArea) Color() (tl.Attr, tl.Attr)  {
-	return t.Text.Color()
+	return t.bgcolor, t.fgcolor
 }
 
-func (t *TextArea) SetColor(fg, bg tl.Attr) {
-	t.Text.SetColor(fg,bg)
+func (t *TextArea) SetColor(bg, fg tl.Attr) {
+	t.bgcolor, t.fgcolor = bg, fg
 }
