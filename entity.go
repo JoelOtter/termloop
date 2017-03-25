@@ -1,6 +1,6 @@
 package termloop
 
-// Provides a general Drawable to be rendered.
+// Entity provides a general Drawable to be rendered.
 type Entity struct {
 	canvas Canvas
 	x      int
@@ -43,6 +43,8 @@ func (e *Entity) Draw(s *Screen) {
 	}
 }
 
+// Tick needs to be inplemented to satisfy the Drawable interface.
+// It updates the Entity based on the Screen's FPS
 func (e *Entity) Tick(ev Event) {}
 
 // Position returns the (x, y) coordinates of the Entity.
@@ -86,4 +88,12 @@ func (e *Entity) ApplyCanvas(c *Canvas) {
 			renderCell(&e.canvas[i][j], &(*c)[i][j])
 		}
 	}
+}
+
+// SetCanvas takes a pointer to a Canvas and replaces the Entity's canvas with
+// the pointer's. It also updates the Entity's dimensions.
+func (e *Entity) SetCanvas(c *Canvas) {
+	e.width = len(*c)
+	e.height = len((*c)[0])
+	e.canvas = *c
 }
