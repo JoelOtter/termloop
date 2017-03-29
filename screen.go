@@ -126,6 +126,11 @@ func (s *Screen) SetFps(f float64) {
 	s.fps = f
 }
 
+// Fps returns the screen framerate.
+func (s *Screen) Fps() float64 {
+	return s.fps
+}
+
 // RenderCell updates the Cell at a given position on the Screen
 // with the attributes in Cell c.
 func (s *Screen) RenderCell(x, y int, c *Cell) {

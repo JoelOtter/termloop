@@ -89,6 +89,13 @@ type DynamicPhysical interface {
 	Collide(Physical)     // Handle collisions with another Physical
 }
 
+// Movable represents a moving object.
+// Moving objects have a direction and speed.
+type Movable interface {
+	Direction() Direction // Return direction byte
+	Speed() float64       // Return speed
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
@@ -149,6 +156,7 @@ type (
 	Key       uint16
 	Modifier  uint8
 	EventType uint8
+	Direction uint8
 )
 
 // Types of event. For example, a keyboard press will be EventKey.
@@ -181,6 +189,14 @@ const (
 	AttrBold Attr = 1 << (iota + 9)
 	AttrUnderline
 	AttrReverse
+)
+
+// Direction values. Can be combined with OR.
+const (
+	DirUp Direction = 1 << iota
+	DirDown
+	DirLeft
+	DirRight
 )
 
 const ModAltModifier = 0x01
