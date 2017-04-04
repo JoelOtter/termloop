@@ -7,13 +7,15 @@ type Rectangle struct {
 	width  int
 	height int
 	color  Attr
+	cell   *Cell
 }
 
 // NewRectangle creates a new Rectangle at position (x, y), with size
 // (width, height) and color color.
 // Returns a pointer to the new Rectangle.
 func NewRectangle(x, y, w, h int, color Attr) *Rectangle {
-	r := Rectangle{x: x, y: y, width: w, height: h, color: color}
+	cell := &Cell{Bg: color, Ch: ' '}
+	r := Rectangle{x: x, y: y, width: w, height: h, color: color, cell: cell}
 	return &r
 }
 
@@ -21,7 +23,7 @@ func NewRectangle(x, y, w, h int, color Attr) *Rectangle {
 func (r *Rectangle) Draw(s *Screen) {
 	for i := 0; i < r.width; i++ {
 		for j := 0; j < r.height; j++ {
-			s.RenderCell(r.x+i, r.y+j, &Cell{Bg: r.color, Ch: ' '})
+			s.RenderCell(r.x+i, r.y+j, r.Cell())
 		}
 	}
 }
@@ -58,4 +60,17 @@ func (r *Rectangle) Color() Attr {
 // SetColor sets the color of the Rectangle.
 func (r *Rectangle) SetColor(color Attr) {
 	r.color = color
+}
+
+// Cell return the cell of the Rectangle.
+func (r *Rectangle) Cell() *Cell {
+	return r.cell
+}
+
+// SetCell sets the cell of the Rectangle given character ch
+// and its Foreground color. Cell Background will be the color
+// of the Rectangle.
+func (r *Rectangle) SetCell(ch rune, color Attr) {
+	cell := &Cell{Bg: r.color, Fg: color, Ch: ch}
+	r.cell = cell
 }
