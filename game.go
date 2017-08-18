@@ -33,6 +33,7 @@ func (g *Game) Screen() *Screen {
 // SetScreen sets the current Screen of a Game.
 func (g *Game) SetScreen(s *Screen) {
 	g.screen = s
+	g.screen.resize(termbox.Size())
 }
 
 // DebugOn returns a bool showing whether or not debug mode is on.
