@@ -1,9 +1,11 @@
 package termloop
 
 import (
+	"context"
 	"fmt"
-	"github.com/nsf/termbox-go"
 	"time"
+
+	"github.com/nsf/termbox-go"
 )
 
 // Represents a top-level Termloop application.
@@ -74,13 +76,17 @@ func (g *Game) SetEndKey(key Key) {
 	g.input.endKey = termbox.Key(key)
 }
 
+func (g *Game) Sync() {
+	termbox.Sync()
+}
+
 // Start starts a Game running. This should be the last thing called in your
 // main function. By default, the escape key exits.
-func (g *Game) Start() {
+func (g *Game) Start(ctx context.Context) {
 	// Init Termbox
 	err := termbox.Init()
 	termbox.SetOutputMode(termbox.Output256)
-	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
+	termbox.SetInputMode(termbox.InputCurrent)
 	if err != nil {
 		panic(err)
 	}
@@ -101,6 +107,9 @@ mainloop:
 
 		select {
 		case ev := <-g.input.eventQ:
+			if ev.Key == termbox.KeyCtrlS {
+				g.Sync()
+			}
 			if ev.Key == g.input.endKey {
 				break mainloop
 			} else if EventType(ev.Type) == EventResize {
@@ -116,6 +125,10 @@ mainloop:
 		g.screen.Draw()
 		// If g.screen.fps is zero (the default), then 1000.0/g.screen.fps -> +Inf -> time.Duration(+Inf), which
 		// is a negative number, and so time.Sleep returns immediately.
-		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/g.screen.fps) * time.Millisecond)
+		select {
+		case <-time.After(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/g.screen.fps) * time.Millisecond):
+		case <-ctx.Done():
+			break
+		}
 	}
 }
