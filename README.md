@@ -46,6 +46,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [Frame Assault](https://github.com/Ariemeth/frame_assault) (@Ariemeth)
 - [Minesweeper](https://github.com/ryanbaer/minesweeper-go) (@ryanbaer)
 - [Termtank](https://github.com/TerrySolar/termtank) (@TerrySolar)
+- [Snake](https://github.com/mattkelly/snake-go) (@mattkelly)
 
 _Feel free to add yours with a pull request!_
 
