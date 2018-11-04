@@ -30,10 +30,8 @@ func NewBaseLevel(bg Cell) *BaseLevel {
 // and processes any input.
 func (l *BaseLevel) Tick(ev Event) {
 	// Handle input
-	if ev.Type != EventNone {
-		for _, e := range l.Entities {
-			e.Tick(ev)
-		}
+	for _, e := range l.Entities {
+		e.Tick(ev)
 	}
 
 	// Handle collisions
