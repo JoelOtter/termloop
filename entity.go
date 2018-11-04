@@ -43,7 +43,7 @@ func (e *Entity) Draw(s *Screen) {
 	}
 }
 
-// Tick needs to be inplemented to satisfy the Drawable interface.
+// Tick needs to be implemented to satisfy the Drawable interface.
 // It updates the Entity based on the Screen's FPS
 func (e *Entity) Tick(ev Event) {}
 

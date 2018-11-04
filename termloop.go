@@ -7,7 +7,7 @@ import (
 
 // A Canvas is a 2D array of Cells, used for drawing.
 // The structure of a Canvas is an array of columns.
-// This is so it can be addrssed canvas[x][y].
+// This is so it can be addressed canvas[x][y].
 type Canvas [][]Cell
 
 // NewCanvas returns a new Canvas, with

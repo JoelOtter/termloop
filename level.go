@@ -65,7 +65,7 @@ func (l *BaseLevel) Tick(ev Event) {
 // DrawBackground draws the background Cell bg to each Cell of the Screen s.
 func (l *BaseLevel) DrawBackground(s *Screen) {
 	for i, row := range s.canvas {
-		for j, _ := range row {
+		for j := range row {
 			s.canvas[i][j] = l.bg
 		}
 	}
