@@ -48,6 +48,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [Termtank](https://github.com/TerrySolar/termtank) (@TerrySolar)
 - [Snake](https://github.com/mattkelly/snake-go) (@mattkelly)
 - [Go Man's Sky](https://rawktron.itch.io/go-mans-sky) (@rawktron)
+- [conwaygo](https://github.com/buckley-w-david/conwaygo) (@buckley-w-david)
 
 _Feel free to add yours with a pull request!_
 
