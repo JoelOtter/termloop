@@ -1,5 +1,7 @@
 ## Termloop
 
+**Please note: this is the 'yolo' branch, containing features that _might_ make it into Termloop eventually. It is by no means stable. Consider it a preview, yeah?**
+
 [![Join the chat at https://gitter.im/JoelOtter/termloop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JoelOtter/termloop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GoDoc](https://godoc.org/github.com/JoelOtter/termloop?status.svg)](http://godoc.org/github.com/JoelOtter/termloop)
 
 ![](_examples/images/maze.png)
