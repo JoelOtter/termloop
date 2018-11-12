@@ -17,6 +17,12 @@ type Screen struct {
 	offsetx   int
 	offsety   int
 	pixelMode bool
+	shaders   []Shader
+}
+
+// A Shader is a function which operates on an individual cell.
+type Shader interface {
+	Run(screen *Screen, cell *Cell, x, y int)
 }
 
 // NewScreen creates a new Screen, with no entities or level.
@@ -29,7 +35,7 @@ func NewScreen() *Screen {
 
 // Tick is used to process events such as input. It is called
 // on every frame by the Game.
-func (s *Screen) Tick(ev Event) {
+func (s *Screen) Tick(ev *Event) {
 	// TODO implement ticks using worker pools
 	if s.level != nil {
 		s.level.Tick(ev)
@@ -64,6 +70,42 @@ func (s *Screen) Draw() {
 		termbox.Flush()
 	}
 	s.oldCanvas = s.canvas
+}
+
+type RayCollisionFunc func(c *Cell, x int, y int) bool
+
+// TODO document
+func (s *Screen) RayTrace(x0, y0, x1, y1 int, rf RayCollisionFunc) bool {
+	deltaX := abs(x1 - x0)
+	deltaY := abs(y1 - y0)
+	stepX, stepY := 1, 1
+	if x0 >= x1 {
+		stepX = -1
+	}
+	if y0 >= y1 {
+		stepY = -1
+	}
+	deltaErr := deltaX - deltaY
+	for {
+		// If there's a collision, stop tracing
+		if rf(&s.canvas[x0][y0], x0, y0) {
+			return true
+		}
+		// If we reach the end of the trace, stop tracing
+		if x0 == x1 && y0 == y1 {
+			return false
+		}
+
+		deltaErr2 := 2 * deltaErr
+		if deltaErr2 > -deltaY {
+			deltaErr -= deltaY
+			x0 += stepX
+		}
+		if deltaErr2 < deltaX {
+			deltaErr += deltaX
+			y0 += stepY
+		}
+	}
 }
 
 func (s *Screen) resize(w, h int) {
@@ -141,6 +183,11 @@ func (s *Screen) RenderCell(x, y int, c *Cell) {
 // the canvas height while sacrificing character drawing ability.
 func (s *Screen) EnablePixelMode() {
 	s.pixelMode = true
+}
+
+// TODO document
+func (s *Screen) AddShader(shader Shader) {
+	s.shaders = append(s.shaders, shader)
 }
 
 func (s *Screen) offset() (int, int) {

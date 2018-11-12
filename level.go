@@ -7,7 +7,8 @@ type Level interface {
 	AddEntity(Drawable)
 	RemoveEntity(Drawable)
 	Draw(*Screen)
-	Tick(Event)
+	Tick(*Event)
+	AddShader(Shader)
 }
 
 // BaseLevel type represents a Level with a background defined as a Cell,
@@ -17,6 +18,7 @@ type BaseLevel struct {
 	bg       Cell
 	offsetx  int
 	offsety  int
+	shaders  []Shader
 }
 
 // NewBaseLevel creates a new BaseLevel with background bg.
@@ -28,7 +30,7 @@ func NewBaseLevel(bg Cell) *BaseLevel {
 
 // Tick handles any collisions between Physicals in the level's entities,
 // and processes any input.
-func (l *BaseLevel) Tick(ev Event) {
+func (l *BaseLevel) Tick(ev *Event) {
 	// Handle input
 	for _, e := range l.Entities {
 		e.Tick(ev)
@@ -76,6 +78,13 @@ func (l *BaseLevel) Draw(s *Screen) {
 	for _, e := range l.Entities {
 		e.Draw(s)
 	}
+	for x := 0; x < len(s.canvas); x++ {
+		for y := 0; y < len(s.canvas[0]); y++ {
+			for _, shader := range l.shaders {
+				shader.Run(s, &s.canvas[x][y], x-l.offsetx, y-l.offsety)
+			}
+		}
+	}
 	s.setOffset(offx, offy)
 }
 
@@ -104,6 +113,10 @@ func (l *BaseLevel) Offset() (int, int) {
 // moving the 'camera'.
 func (l *BaseLevel) SetOffset(x, y int) {
 	l.offsetx, l.offsety = x, y
+}
+
+func (l *BaseLevel) AddShader(shader Shader) {
+	l.shaders = append(l.shaders, shader)
 }
 
 func checkCollisionsWorker(ps []Physical, jobs <-chan DynamicPhysical, results chan<- int) {

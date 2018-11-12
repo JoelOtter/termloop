@@ -26,7 +26,7 @@ func (r *Rectangle) Draw(s *Screen) {
 	}
 }
 
-func (r *Rectangle) Tick(ev Event) {}
+func (r *Rectangle) Tick(ev *Event) {}
 
 // Size returns the width and height in characters of the Rectangle.
 func (r *Rectangle) Size() (int, int) {

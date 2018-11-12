@@ -30,7 +30,7 @@ func NewText(x, y int, text string, fg, bg Attr) *Text {
 	}
 }
 
-func (t *Text) Tick(ev Event) {}
+func (t *Text) Tick(ev *Event) {}
 
 // Draw draws the Text to the Screen s.
 func (t *Text) Draw(s *Screen) {

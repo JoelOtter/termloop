@@ -108,9 +108,9 @@ mainloop:
 			} else if EventType(ev.Type) == EventError {
 				g.Log(ev.Err.Error())
 			}
-			g.screen.Tick(convertEvent(ev))
+			g.screen.Tick(convertEvent(&ev))
 		default:
-			g.screen.Tick(Event{Type: EventNone})
+			g.screen.Tick(&Event{Type: EventNone})
 		}
 
 		g.screen.Draw()

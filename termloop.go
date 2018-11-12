@@ -69,7 +69,7 @@ func CanvasFromString(str string) Canvas {
 
 // Drawable represents something that can be drawn, and placed in a Level.
 type Drawable interface {
-	Tick(Event)   // Method for processing events, e.g. input
+	Tick(*Event)  // Method for processing events, e.g. input
 	Draw(*Screen) // Method for drawing to the screen
 }
 
@@ -103,14 +103,22 @@ func max(a, b int) int {
 	return b
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 // Abstract Termbox stuff for convenience - users
 // should only need Termloop imported
 
 // Represents a character to be drawn on the screen.
 type Cell struct {
-	Fg Attr // Foreground colour
-	Bg Attr // Background color
-	Ch rune // The character to draw
+	Fg       Attr        // Foreground colour
+	Bg       Attr        // Background color
+	Ch       rune        // The character to draw
+	Metadata interface{} // Arbitrary metadata
 }
 
 func (c *Cell) equals(c2 *Cell) bool {
@@ -132,8 +140,8 @@ type Event struct {
 	MouseY int       // Mouse Y coordinate, if any
 }
 
-func convertEvent(ev termbox.Event) Event {
-	return Event{
+func convertEvent(ev *termbox.Event) *Event {
+	return &Event{
 		Type:   EventType(ev.Type),
 		Key:    Key(ev.Key),
 		Ch:     ev.Ch,
