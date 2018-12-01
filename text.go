@@ -1,4 +1,5 @@
 package termloop
+
 import (
 	RW "github.com/mattn/go-runewidth"
 )
@@ -19,7 +20,7 @@ type Text struct {
 // Returns a pointer to the new Text.
 func NewText(x, y int, text string, fg, bg Attr) *Text {
 	str := []rune(text)
-	c := make([]Cell, RW.StringWidth(str))
+	c := make([]Cell, RW.StringWidth(text))
 	for i := range c {
 		c[i] = Cell{Ch: str[i], Fg: fg, Bg: bg}
 	}
