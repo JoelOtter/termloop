@@ -20,9 +20,20 @@ type Text struct {
 // Returns a pointer to the new Text.
 func NewText(x, y int, text string, fg, bg Attr) *Text {
 	str := []rune(text)
-	c := make([]Cell, RW.StringWidth(text))
-	for i := range c {
-		c[i] = Cell{Ch: str[i], Fg: fg, Bg: bg}
+	c := make([]Cell, 0)
+	for _, r := range str {
+		lengthOfRune := RW.StringWidth(string(r))
+		if lengthOfRune == 1 {
+			cell := Cell{Ch: r, Fg: fg, Bg: bg}
+			c = append(c, cell)
+		} else {
+			cell := Cell{Ch: r, Fg: fg, Bg: bg}
+			c = append(c, cell)
+			for i := 1; i < lengthOfRune; i++ {
+				cell := Cell{Ch: r, Fg: fg, Bg: bg}
+				c = append(c, cell)
+			}
+		}
 	}
 	return &Text{
 		x:      x,
@@ -62,7 +73,7 @@ func (t *Text) SetPosition(x, y int) {
 
 // Text returns the text of the Text.
 func (t *Text) Text() string {
-	return string(t.text)
+	return RW.StringWidth(string(t.text)), 1
 }
 
 // SetText sets the text of the Text to be text.
