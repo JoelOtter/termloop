@@ -62,7 +62,7 @@ func (t *Text) Position() (int, int) {
 
 // Size returns the width and height of the Text.
 func (t *Text) Size() (int, int) {
-	return len(t.text), 1
+	return RW.StringWidth(string(t.text)), 1
 }
 
 // SetPosition sets the coordinates of the Text to be (x, y).
@@ -73,7 +73,7 @@ func (t *Text) SetPosition(x, y int) {
 
 // Text returns the text of the Text.
 func (t *Text) Text() string {
-	return RW.StringWidth(string(t.text)), 1
+	return string(t.text)
 }
 
 // SetText sets the text of the Text to be text.
