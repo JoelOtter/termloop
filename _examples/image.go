@@ -45,6 +45,7 @@ func main() {
 	}
 
 	g := tl.NewGame()
+	g.Screen().SetFps(30)
 	g.Screen().EnablePixelMode()
 	c := tl.BackgroundCanvasFromFile(os.Args[1])
 	g.Screen().AddEntity(NewImage(c))

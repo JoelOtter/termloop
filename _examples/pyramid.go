@@ -193,6 +193,7 @@ func buildLevel(g *tl.Game, w, h, score int) {
 
 func main() {
 	g := tl.NewGame()
+	g.Screen().SetFps(60)
 	buildLevel(g, 6, 2, 0)
 	g.SetDebugOn(true)
 	g.Start()

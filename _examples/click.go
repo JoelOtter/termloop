@@ -58,6 +58,7 @@ func (c *Clickable) Tick(ev tl.Event) {
 
 func main() {
 	g := tl.NewGame()
+	g.Screen().SetFps(60)
 	g.Screen().AddEntity(NewEventInfo(0, 0))
 	for i := 0; i < 40; i++ {
 		for j := 1; j < 20; j++ {

@@ -41,6 +41,7 @@ func (player *Player) Collide(collision tl.Physical) {
 
 func main() {
 	game := tl.NewGame()
+	game.Screen().SetFps(30)
 	level := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorGreen,
 		Fg: tl.ColorBlack,
