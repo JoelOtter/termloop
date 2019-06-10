@@ -49,6 +49,7 @@ func checkErr(err error) {
 
 func main() {
 	g := tl.NewGame()
+	g.Screen().SetFps(30)
 	l := tl.NewBaseLevel(tl.Cell{Bg: 76, Fg: 1})
 	lmap, err := ioutil.ReadFile("level.json")
 	checkErr(err)

@@ -34,6 +34,7 @@ func main() {
 		return
 	}
 	g := tl.NewGame()
+	g.Screen().SetFps(30)
 	g.Screen().AddEntity(&MovingText{tl.NewText(0, 0, os.Args[1], tl.ColorWhite, tl.ColorBlue)})
 	g.Start()
 }
