@@ -50,6 +50,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [Go Man's Sky](https://rawktron.itch.io/go-mans-sky) (@rawktron)
 - [conwaygo](https://github.com/buckley-w-david/conwaygo) (@buckley-w-david)
 - [Doric (a Columns clone)](https://github.com/svera/doric) (@svera)
+- [Terminal-based Snake](https://github.com/tristangoossens/snake-go) (@tristangoossens)
 
 _Feel free to add yours with a pull request!_
 
