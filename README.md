@@ -51,6 +51,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [conwaygo](https://github.com/buckley-w-david/conwaygo) (@buckley-w-david)
 - [Doric (a Columns clone)](https://github.com/svera/doric) (@svera)
 - [Terminal-based Snake](https://github.com/tristangoossens/snake-go) (@tristangoossens)
+- [Gopher Typer](https://github.com/ScottBrooks/gopher_typer) (@scottbrooksca)
 
 _Feel free to add yours with a pull request!_
 
