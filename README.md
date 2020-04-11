@@ -53,6 +53,7 @@ The Termloop extras are a collection of types and functions, the use of which wi
 - [Terminal-based Snake](https://github.com/tristangoossens/snake-go) (@tristangoossens)
 - [Sokoban](https://github.com/tristangoossens/sokoban-go) (@tristangoossens)
 - [Gopher Typer](https://github.com/ScottBrooks/gopher_typer) (@scottbrooksca)
+- [Tetris](https://bitbucket.org/cam73/tetris) (@cam73)
 
 _Feel free to add yours with a pull request!_
 
