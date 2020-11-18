@@ -187,7 +187,9 @@ It's pretty simple - if we want our object to be 'solid', then we implement Phys
 
 Note that, for performance reasons, you should try and have as few DynamicPhysicals as possible - for example, our Player will be one, but the lake need only be a Physical.
 
-The Rectangle type already implements Physical, so we don't actually need to do anything. Let's go ahead and add our methods for Player. We'll have to modify our struct and Tick method, to keep track of the Player's previous position so we can move it back there if it collides with something.
+The Rectangle type already implements Physical, so we don't actually need to do anything. As well, Player already implements DynamicPhysical because of the embedded Entity. However, we want custom behaviour for Collide, so let's implement that method. For that, we'll have to modify our struct and Tick method, to keep track of the Player's previous position so we can move it back there if it collides with something.
+
+
 
 ```go
 type Player struct {
@@ -210,14 +212,6 @@ func (player *Player) Tick(event tl.Event) {
 			player.SetPosition(player.prevX, player.prevY+1)
 		}
 	}
-}
-
-func (player *Player) Size() (int, int) {
-	return player.Size()
-}
-
-func (player *Player) Position() (int, int) {
-	return player.Position()
 }
 
 func (player *Player) Collide(collision tl.Physical) {
