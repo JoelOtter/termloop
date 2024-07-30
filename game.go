@@ -1,6 +1,7 @@
 package termloop
 
 import (
+	"context"
 	"fmt"
 	"github.com/nsf/termbox-go"
 	"time"
@@ -77,6 +78,13 @@ func (g *Game) SetEndKey(key Key) {
 // Start starts a Game running. This should be the last thing called in your
 // main function. By default, the escape key exits.
 func (g *Game) Start() {
+	g.StartCtx(context.Background())
+}
+
+// StartCtx starts a Game running. This should be the last thing called in your
+// main function. By default, the escape key exits.
+// Can provide a context that can be cancelled
+func (g *Game) StartCtx(ctx context.Context) {
 	// Init Termbox
 	err := termbox.Init()
 	termbox.SetOutputMode(termbox.Output256)
@@ -95,27 +103,32 @@ func (g *Game) Start() {
 
 mainloop:
 	for {
-		update := time.Now()
-		g.screen.delta = update.Sub(clock).Seconds()
-		clock = update
-
 		select {
-		case ev := <-g.input.eventQ:
-			if ev.Key == g.input.endKey {
-				break mainloop
-			} else if EventType(ev.Type) == EventResize {
-				g.screen.resize(ev.Width, ev.Height)
-			} else if EventType(ev.Type) == EventError {
-				g.Log(ev.Err.Error())
-			}
-			g.screen.Tick(convertEvent(ev))
+		case <-ctx.Done():
+			break
 		default:
-			g.screen.Tick(Event{Type: EventNone})
-		}
+			update := time.Now()
+			g.screen.delta = update.Sub(clock).Seconds()
+			clock = update
 
-		g.screen.Draw()
-		// If g.screen.fps is zero (the default), then 1000.0/g.screen.fps -> +Inf -> time.Duration(+Inf), which
-		// is a negative number, and so time.Sleep returns immediately.
-		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/g.screen.fps) * time.Millisecond)
+			select {
+			case ev := <-g.input.eventQ:
+				if ev.Key == g.input.endKey {
+					break mainloop
+				} else if EventType(ev.Type) == EventResize {
+					g.screen.resize(ev.Width, ev.Height)
+				} else if EventType(ev.Type) == EventError {
+					g.Log(ev.Err.Error())
+				}
+				g.screen.Tick(convertEvent(ev))
+			default:
+				g.screen.Tick(Event{Type: EventNone})
+			}
+
+			g.screen.Draw()
+			// If g.screen.fps is zero (the default), then 1000.0/g.screen.fps -> +Inf -> time.Duration(+Inf), which
+			// is a negative number, and so time.Sleep returns immediately.
+			time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/g.screen.fps) * time.Millisecond)
+		}
 	}
 }
